@@ -8,7 +8,7 @@ It is not a model, and not a RAG framework. It's a wire-level proxy with one job
 
 ## Status
 
-Early / pre-release. The core proxy, confidence evaluator, and calibration endpoint are implemented and tested (including live end-to-end verification against a mock upstream). It has **not** yet been tested against a real OpenAI or Ollama endpoint, and has no published crate. Treat it as a working prototype, not a production dependency.
+Pre-1.0, but functionally verified. The core proxy, confidence evaluator, calibration endpoint, and SSE chunk reassembly (see Known limitations) are implemented and tested — including live end-to-end verification against both a mock upstream and a real OpenAI-compatible endpoint (xAI's Grok API). It has not been tested against Ollama specifically, and has no published crate yet.
 
 ## Quick start
 
@@ -116,9 +116,10 @@ See `test_calibrate.py` for a runnable example.
 
 ## Known limitations
 
-- Only OpenAI-compatible `/v1/chat/completions` is supported today. An Ollama `/api/chat` adapter is planned but not built.
+- Only OpenAI-compatible `/v1/chat/completions` is supported today. An Ollama `/api/chat` adapter is planned but not built. Note: not every "OpenAI-compatible" API accepts the auto-injected `logprobs: true` field (e.g. Google's Gemini OpenAI-compat layer rejects it) — rag-gate doesn't yet detect and adapt to that per-upstream.
 - Escalation routing (automatic retry to a fallback model on ESCALATE) is not yet implemented — the client currently has to handle that itself.
-- The SSE chunk parser assumes each stream poll yields one complete JSON frame; it hasn't been stress-tested against real-world TCP fragmentation.
+- The SSE chunk parser reassembles events split across TCP/HTTP chunk boundaries rather than assuming one poll equals one complete frame; covered by dedicated tests, but real-world traffic patterns are inherently broader than any test suite.
+- Performance targets (added latency, concurrent stream throughput) are aspirational and have not been benchmarked.
 - No published crate yet.
 
 ## Development
