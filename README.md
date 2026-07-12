@@ -8,9 +8,18 @@ It is not a model, and not a RAG framework. It's a wire-level proxy with one job
 
 ## Status
 
-Pre-1.0, but functionally verified. The core proxy, confidence evaluator, calibration endpoint, and SSE chunk reassembly (see Known limitations) are implemented and tested — including live end-to-end verification against both a mock upstream and a real OpenAI-compatible endpoint (xAI's Grok API). It has not been tested against Ollama specifically, and has no published crate yet.
+Pre-1.0, but functionally verified. The core proxy, confidence evaluator, calibration endpoint, and SSE chunk reassembly (see Known limitations) are implemented and tested — including live end-to-end verification against both a mock upstream and a real OpenAI-compatible endpoint (xAI's Grok API). It has not been tested against Ollama specifically. Published on crates.io as `rag-gate`.
 
 ## Quick start
+
+Install the binary from crates.io:
+
+```bash
+cargo install rag-gate
+RAGGATE_UPSTREAM_URL=https://api.openai.com rag-gate
+```
+
+Or build from source:
 
 ```bash
 cargo build --release
@@ -120,7 +129,6 @@ See `test_calibrate.py` for a runnable example.
 - Escalation routing (automatic retry to a fallback model on ESCALATE) is not yet implemented — the client currently has to handle that itself.
 - The SSE chunk parser reassembles events split across TCP/HTTP chunk boundaries rather than assuming one poll equals one complete frame; covered by dedicated tests, but real-world traffic patterns are inherently broader than any test suite.
 - Performance targets (added latency, concurrent stream throughput) are aspirational and have not been benchmarked.
-- No published crate yet.
 
 ## Development
 
