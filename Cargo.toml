@@ -5,7 +5,7 @@ edition = "2024"
 description = "Logprob-based confidence middleware for selective generation in RAG pipelines"
 keywords = ["llm", "rag", "confidence", "proxy", "selective-generation"]
 categories = ["web-programming::http-server", "science"]
-repository = "https://github.com/anmolsethi/rag-gate"
+repository = "https://github.com/ajanm007/rag-gate"
 license = "MIT"
 
 [dependencies]
