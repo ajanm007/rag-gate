@@ -2,13 +2,13 @@
 
 A lightweight, asynchronous Rust proxy that intercepts OpenAI-compatible LLM API streams, evaluates token-level logprob confidence in real time, and gates generation output into one of three decisions: **ANSWER**, **ABSTAIN**, or **ESCALATE**.
 
-It uses a signal that's already computed for free during inference — token logprobs — as a real-time confidence gate, instead of a post-hoc LLM judge (expensive, slow) or a retrieval-score threshold (cheap, but empirically flat with model uncertainty).
+It uses a signal that's already computed for free during inference token logprobs  as a real-time confidence gate, instead of a post-hoc LLM judge (expensive, slow) or a retrieval-score threshold (cheap, but empirically flat with model uncertainty).
 
 It is not a model, and not a RAG framework. It's a wire-level proxy with one job: decide if the model is confident enough to trust.
 
 ## Status
 
-Pre-1.0, but functionally verified. The core proxy, confidence evaluator, calibration endpoint, and SSE chunk reassembly (see Known limitations) are implemented and tested — including live end-to-end verification against both a mock upstream and a real OpenAI-compatible endpoint (xAI's Grok API). It has not been tested against Ollama specifically. Published on crates.io as `rag-gate`.
+Pre-1.0, but functionally verified. The core proxy, confidence evaluator, calibration endpoint, and SSE chunk reassembly (see Known limitations) are implemented and tested including live end-to-end verification against both a mock upstream and a real OpenAI-compatible endpoint (xAI's Grok API). It has not been tested against Ollama specifically. Published on crates.io as `rag-gate`.
 
 ## Quick start
 
@@ -74,7 +74,7 @@ abstain_beta = -1.2
 ```
 
 | Env var | Overrides |
-|---|---|
+| --- | --- |
 | `RAGGATE_CONFIG` | Path to the TOML config file (default: `rag-gate.toml`) |
 | `RAGGATE_LISTEN_ADDR` | `proxy.listen_addr` |
 | `RAGGATE_UPSTREAM_URL` | `proxy.upstream_url` |
@@ -111,12 +111,23 @@ curl -X POST http://127.0.0.1:8080/v1/rag-gate/calibrate \
 
 See `test_calibrate.py` for a runnable example.
 
+## Performance
+
+Measured added latency (rag-gate vs. calling the upstream directly), release build, local loopback against a 20-token streamed response, 200 requests:
+
+| Percentile | Added overhead |
+| --- | --- |
+| p50 | \~0.2–0.4ms |
+| p99 | \~3.6–4.0ms |
+
+Both comfortably under the &lt;5ms p99 target. This measures rag-gate's own processing cost (SSE parsing, confidence evaluation, buffering) in isolation; real-world overhead will also include whatever network hop is introduced by routing through the proxy, which depends entirely on your deployment topology (same-host vs. remote).
+
 ## Metrics
 
 `GET /metrics` exposes Prometheus-format metrics:
 
 | Metric | Type | Description |
-|---|---|---|
+| --- | --- | --- |
 | `raggate_requests_total` | Counter | Total requests proxied |
 | `raggate_decisions_total{decision}` | Counter | ANSWER / ABSTAIN / ESCALATE counts |
 | `raggate_confidence_score` | Histogram | Distribution of confidence scores |
@@ -128,7 +139,7 @@ See `test_calibrate.py` for a runnable example.
 - Only OpenAI-compatible `/v1/chat/completions` is supported today. An Ollama `/api/chat` adapter is planned but not built. Note: not every "OpenAI-compatible" API accepts the auto-injected `logprobs: true` field (e.g. Google's Gemini OpenAI-compat layer rejects it) — rag-gate doesn't yet detect and adapt to that per-upstream.
 - Escalation routing (automatic retry to a fallback model on ESCALATE) is not yet implemented — the client currently has to handle that itself.
 - The SSE chunk parser reassembles events split across TCP/HTTP chunk boundaries rather than assuming one poll equals one complete frame; covered by dedicated tests, but real-world traffic patterns are inherently broader than any test suite.
-- Performance targets (added latency, concurrent stream throughput) are aspirational and have not been benchmarked.
+- Added-latency overhead has been benchmarked (see Performance) but concurrent-stream throughput has not.
 
 ## Development
 

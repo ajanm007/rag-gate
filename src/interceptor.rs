@@ -66,13 +66,16 @@ impl<S> InterceptedStream<S> {
             Decision::Answer => "ANSWER", // Should not emit for ANSWER unless requested
         };
 
-        // Note: For beta threshold, we don't have direct access here if we don't store it, 
-        // but we can just use 0.0 or pass it from eval. In a real app we'd get it from evaluator.
+        let threshold_used = match decision {
+            Decision::Abstain => self.evaluator.thresholds().abstain_beta,
+            Decision::Escalate | Decision::Answer => self.evaluator.thresholds().answer_alpha,
+        };
+
         let frame = RagGateDecisionFrame {
             rag_gate_decision: decision_str.to_string(),
             confidence_score: self.evaluator.current_confidence(),
             tokens_evaluated: self.evaluator.count(),
-            threshold_used: 0.0, // Can be improved later
+            threshold_used,
         };
 
         let json = serde_json::to_string(&frame).unwrap();

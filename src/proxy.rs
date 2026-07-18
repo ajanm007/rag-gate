@@ -13,7 +13,8 @@ use futures_util::StreamExt;
 use crate::config::ProxyConfig;
 use crate::evaluator::ConfidenceEvaluator;
 use crate::interceptor::InterceptedStream;
-use crate::metrics::REQUESTS_TOTAL;
+use crate::metrics::{PROXY_LATENCY_MS, REQUESTS_TOTAL};
+use std::time::Instant;
 
 #[derive(Clone)]
 pub struct AppState {
@@ -36,6 +37,7 @@ async fn chat_completions_handler(
     State(state): State<AppState>,
     req: Request<Body>,
 ) -> Response {
+    let request_start = Instant::now();
     let upstream_url = format!("{}/v1/chat/completions", state.config.upstream_url);
 
     // Forward headers
@@ -85,6 +87,13 @@ async fn chat_completions_handler(
             return axum::http::StatusCode::BAD_GATEWAY.into_response();
         }
     };
+
+    // Time from receiving the client request to getting the first response
+    // header back from upstream. This includes the real network round-trip
+    // to upstream, so it is NOT an isolated measurement of rag-gate's own
+    // overhead (request parsing, field injection) the way a loopback
+    // benchmark is — it reflects what operators actually experience.
+    PROXY_LATENCY_MS.observe(request_start.elapsed().as_secs_f64() * 1000.0);
 
     // Forward the response stream through our interceptor
     let byte_stream = res.bytes_stream().map(|r| r.map_err(|e| axum::Error::new(e)));

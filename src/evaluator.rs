@@ -52,6 +52,10 @@ impl ConfidenceEvaluator {
     pub fn count(&self) -> usize {
         self.count
     }
+
+    pub fn thresholds(&self) -> &GatingThresholds {
+        &self.thresholds
+    }
 }
 
 #[cfg(test)]
