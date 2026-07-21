@@ -39,6 +39,11 @@ impl ConfidenceEvaluator {
     }
 
     pub fn evaluate(&self) -> Decision {
+        // Warmup floor: the mean over very few tokens is too noisy to abstain
+        // on. Until `min_tokens` have been evaluated, always pass through.
+        if self.count < self.thresholds.min_tokens {
+            return Decision::Answer;
+        }
         let conf = self.current_confidence();
         if conf >= self.thresholds.answer_alpha {
             Decision::Answer
@@ -67,18 +72,40 @@ mod tests {
         let thresholds = GatingThresholds {
             answer_alpha: -0.5,
             abstain_beta: -1.2,
+            min_tokens: 1, // disable warmup floor for this threshold-logic test
         };
         let mut eval = ConfidenceEvaluator::new(thresholds);
 
         eval.add_logprob(-0.4);
         assert_eq!(eval.evaluate(), Decision::Answer);
-        
+
         eval.add_logprob(-0.8);
         // sum = -1.2, count = 2, mean = -0.6
         assert_eq!(eval.evaluate(), Decision::Escalate);
-        
+
         eval.add_logprob(-2.6);
         // sum = -3.8, count = 3, mean ≈ -1.267 (< -1.2 abstain threshold)
+        assert_eq!(eval.evaluate(), Decision::Abstain);
+    }
+
+    #[test]
+    fn warmup_floor_forces_answer_below_min_tokens() {
+        let thresholds = GatingThresholds {
+            answer_alpha: -0.5,
+            abstain_beta: -1.2,
+            min_tokens: 4,
+        };
+        let mut eval = ConfidenceEvaluator::new(thresholds);
+
+        // Terrible logprobs, but below the 4-token warmup floor → ANSWER.
+        eval.add_logprob(-5.0);
+        assert_eq!(eval.evaluate(), Decision::Answer);
+        eval.add_logprob(-5.0);
+        eval.add_logprob(-5.0);
+        assert_eq!(eval.evaluate(), Decision::Answer); // count = 3, still warming up
+
+        // 4th token crosses the floor; mean -5.0 < abstain_beta → ABSTAIN.
+        eval.add_logprob(-5.0);
         assert_eq!(eval.evaluate(), Decision::Abstain);
     }
 }

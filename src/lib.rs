@@ -7,4 +7,4 @@ pub mod calibrate;
 
 pub use config::{GatingThresholds, ProxyConfig};
 pub use evaluator::{ConfidenceEvaluator, Decision};
-pub use interceptor::InterceptedStream;
+pub use interceptor::{InterceptedStream, Protocol};
