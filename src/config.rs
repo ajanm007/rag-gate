@@ -6,6 +6,17 @@ use std::fs;
 pub struct GatingThresholds {
     pub answer_alpha: f64,
     pub abstain_beta: f64,
+    /// Minimum number of evaluated tokens before any ABSTAIN/ESCALATE decision
+    /// can fire. The mean logprob over 1–2 tokens is extremely noisy — a single
+    /// low-probability opening token ("Well", "Hmm") can drag the mean below
+    /// `abstain_beta` and cut an answer that would have recovered. Below this
+    /// floor the stream always passes through (ANSWER). Set to 1 to disable.
+    #[serde(default = "default_min_tokens")]
+    pub min_tokens: usize,
+}
+
+fn default_min_tokens() -> usize {
+    4
 }
 
 impl Default for GatingThresholds {
@@ -13,6 +24,7 @@ impl Default for GatingThresholds {
         Self {
             answer_alpha: -0.5,
             abstain_beta: -1.2,
+            min_tokens: default_min_tokens(),
         }
     }
 }
@@ -23,6 +35,32 @@ pub struct ProxyConfig {
     pub upstream_url: String,
     #[serde(default)]
     pub thresholds: GatingThresholds,
+    /// Whether to force-inject `logprobs: true` into outgoing OpenAI-style
+    /// requests. Some upstreams (notably Gemini's OpenAI-compat endpoint)
+    /// reject the field with a 400. Disable for those, accepting that gating
+    /// then only works if the client itself requests logprobs.
+    #[serde(default = "default_inject_logprobs")]
+    pub inject_logprobs: bool,
+    /// Maximum request body size accepted from the client, in bytes. Guards
+    /// against unbounded memory use from a malicious or buggy client.
+    #[serde(default = "default_max_body_bytes")]
+    pub max_body_bytes: usize,
+    /// Upstream connect timeout in seconds. A hung upstream must not hang the
+    /// proxy indefinitely.
+    #[serde(default = "default_connect_timeout_secs")]
+    pub connect_timeout_secs: u64,
+}
+
+fn default_inject_logprobs() -> bool {
+    true
+}
+
+fn default_max_body_bytes() -> usize {
+    2 * 1024 * 1024 // 2 MiB
+}
+
+fn default_connect_timeout_secs() -> u64 {
+    10
 }
 
 impl Default for ProxyConfig {
@@ -31,6 +69,9 @@ impl Default for ProxyConfig {
             listen_addr: "0.0.0.0:8080".to_string(),
             upstream_url: "https://api.openai.com".to_string(),
             thresholds: GatingThresholds::default(),
+            inject_logprobs: default_inject_logprobs(),
+            max_body_bytes: default_max_body_bytes(),
+            connect_timeout_secs: default_connect_timeout_secs(),
         }
     }
 }
@@ -58,16 +99,30 @@ impl ProxyConfig {
         if let Ok(url) = env::var("RAGGATE_UPSTREAM_URL") {
             config.upstream_url = url;
         }
-        if let Ok(alpha) = env::var("RAGGATE_ANSWER_ALPHA") {
-            if let Ok(v) = alpha.parse() {
+        if let Ok(alpha) = env::var("RAGGATE_ANSWER_ALPHA")
+            && let Ok(v) = alpha.parse() {
                 config.thresholds.answer_alpha = v;
             }
-        }
-        if let Ok(beta) = env::var("RAGGATE_ABSTAIN_BETA") {
-            if let Ok(v) = beta.parse() {
+        if let Ok(beta) = env::var("RAGGATE_ABSTAIN_BETA")
+            && let Ok(v) = beta.parse() {
                 config.thresholds.abstain_beta = v;
             }
-        }
+        if let Ok(v) = env::var("RAGGATE_MIN_TOKENS")
+            && let Ok(v) = v.parse() {
+                config.thresholds.min_tokens = v;
+            }
+        if let Ok(v) = env::var("RAGGATE_INJECT_LOGPROBS")
+            && let Ok(v) = v.parse() {
+                config.inject_logprobs = v;
+            }
+        if let Ok(v) = env::var("RAGGATE_MAX_BODY_BYTES")
+            && let Ok(v) = v.parse() {
+                config.max_body_bytes = v;
+            }
+        if let Ok(v) = env::var("RAGGATE_CONNECT_TIMEOUT_SECS")
+            && let Ok(v) = v.parse() {
+                config.connect_timeout_secs = v;
+            }
 
         config
     }
@@ -79,6 +134,12 @@ struct TomlConfig {
     proxy: TomlProxy,
     #[serde(default)]
     thresholds: GatingThresholds,
+    #[serde(default = "default_inject_logprobs")]
+    inject_logprobs: bool,
+    #[serde(default = "default_max_body_bytes")]
+    max_body_bytes: usize,
+    #[serde(default = "default_connect_timeout_secs")]
+    connect_timeout_secs: u64,
 }
 
 #[derive(Debug, Deserialize)]
@@ -112,6 +173,9 @@ impl From<TomlConfig> for ProxyConfig {
             listen_addr: toml.proxy.listen_addr,
             upstream_url: toml.proxy.upstream_url,
             thresholds: toml.thresholds,
+            inject_logprobs: toml.inject_logprobs,
+            max_body_bytes: toml.max_body_bytes,
+            connect_timeout_secs: toml.connect_timeout_secs,
         }
     }
 }
