@@ -1,0 +1,123 @@
+[
+  {
+    "id": "5a8c7595554299585d9e36b6",
+    "question": "What government position was held by the woman who portrayed Corliss Archer in the film Kiss and Tell?",
+    "gold": "Chief of Protocol",
+    "orig_model": "grok-3-mini",
+    "orig_answer": "ambassador (to Ghana/Czechoslovakia) \n\nThe actress who portrayed Corliss Archer in the 1945 film Kiss and Tell is Shirley Temple (later Shirley Temple Black). After retiring from acting she entered diplomacy, serving as U.S. Ambassador to Ghana (1974\u20131976)",
+    "orig_correct": false,
+    "reroute_model": "grok-4.5",
+    "reroute_answer": "Ambassador",
+    "reroute_correct": false
+  },
+  {
+    "id": "5a85ea095542994775f606a8",
+    "question": "What science fantasy young adult series, told in first person, has a set of companion books narrating the stories of enslaved worlds and alien species?",
+    "gold": "Animorphs",
+    "orig_model": "grok-3-mini",
+    "orig_answer": "The query describes a YA science-fantasy series (with morphing technology that blends sci-fi hardware and fantastical biology) written in rotating first-person perspectives. Its core premise centers on the Yeerks, a parasitic species that has already conquered or enslaved multiple planets and is now targeting Earth.  \n\nTo",
+    "orig_correct": false,
+    "reroute_model": "grok-4.5",
+    "reroute_answer": "Animorphs",
+    "reroute_correct": true
+  },
+  {
+    "id": "5a85b2d95542997b5ce40028",
+    "question": "Who was known by his stage name Aladin and helped organizations improve their performance as a consultant?",
+    "gold": "Eenasul Fateh",
+    "orig_model": "grok-3-mini",
+    "orig_answer": "The query points to a notable individual whose early career involved stage performance under the pseudonym \"Aladin,\" followed by a later role as an organizational-performance consultant.  \n\nThat individual is Werner Erhard (born John Paul Rosenberg).  \n\nFinal answer: Werner Erhard",
+    "orig_correct": false,
+    "reroute_model": "grok-4.5",
+    "reroute_answer": "Unknown",
+    "reroute_correct": false
+  },
+  {
+    "id": "5a877e5d5542993e715abf7d",
+    "question": "What screenwriter with credits for \"Evolution\" co-wrote a film starring Nicolas Cage and T\u00e9a Leoni?",
+    "gold": "David Weissman",
+    "orig_model": "grok-3-mini",
+    "orig_answer": "David Diamond \n\nThe query identifies a screenwriter who contributed to the 2001 sci-fi comedy Evolution (screenplay by David Diamond & Don Jakoby). The same writer co-authored the screenplay for the 2000 romantic drama The Family Man, which stars Nicolas Cage and T\u00e9a Leoni. Cross-checking",
+    "orig_correct": false,
+    "reroute_model": "grok-4.5",
+    "reroute_answer": "David Diamond",
+    "reroute_correct": false
+  },
+  {
+    "id": "5ab3b0bf5542992ade7c6e39",
+    "question": "What year did Guns N Roses perform a promo for a movie starring Arnold Schwarzenegger as a former New York Police detective?",
+    "gold": "1999",
+    "orig_model": "grok-3-mini",
+    "orig_answer": "The movie matching the description (Arnold Schwarzenegger as former NYPD detective Jericho Cane) is *End of Days* (1999). Guns N' Roses contributed the track \"Oh My God\" to its soundtrack and performed promotional appearances tied to the film's release that same year.\n\nFinal answer: 199",
+    "orig_correct": true,
+    "reroute_model": "grok-4.5",
+    "reroute_answer": "1999",
+    "reroute_correct": true
+  },
+  {
+    "id": "5ab56e32554299637185c594",
+    "question": "Are Random House Tower and 888 7th Avenue both used for real estate?",
+    "gold": "no",
+    "orig_model": "grok-3-mini",
+    "orig_answer": "Yes \n\nThe two buildings are both Manhattan office towers (i.e., commercial real-estate assets).",
+    "orig_correct": false,
+    "reroute_model": "grok-4.5",
+    "reroute_answer": "Yes",
+    "reroute_correct": false
+  },
+  {
+    "id": "5ab6d09255429954757d337d",
+    "question": "The football manager who recruited David Beckham managed Manchester United during what timeframe?",
+    "gold": "from 1986 to 2013",
+    "orig_model": "grok-3-mini",
+    "orig_answer": "1986\u20132013 \n\nThe manager in question is Alex Ferguson, who first signed the young David Beckham (then a schoolboy) to Manchester United\u2019s youth setup in 1991. Ferguson\u2019s own tenure at the club ran continuously from his appointment in November 1986 until his retirement in May",
+    "orig_correct": false,
+    "reroute_model": "grok-4.5",
+    "reroute_answer": "1986\u20132013",
+    "reroute_correct": false
+  },
+  {
+    "id": "5a75e05c55429976ec32bc5f",
+    "question": "Brown State Fishing Lake is in a country that has a population of how many inhabitants ?",
+    "gold": "9,984",
+    "orig_model": "grok-3-mini",
+    "orig_answer": "331 million \n\nThe location of Brown State Fishing Lake is verified as Kansas, United States. The country is therefore the United States, whose population (per the 2020 census) stands at 331 million. The required answer format limits the response to this concise population figure alone.",
+    "orig_correct": false,
+    "reroute_model": "grok-4.5",
+    "reroute_answer": "331 million",
+    "reroute_correct": false
+  },
+  {
+    "id": "5ab29c24554299449642c932",
+    "question": "Are Giuseppe Verdi and Ambroise Thomas both Opera composers ?",
+    "gold": "yes",
+    "orig_model": "grok-3-mini",
+    "orig_answer": "Yes \n\nThe answer is yes because both composers are principally known for their operatic output: Verdi created a large canon of Italian operas (e.g., Rigoletto, Aida), while Thomas produced major French grand operas (e.g., Mignon, Hamlet). No other genre defines either composer\u2019s",
+    "orig_correct": true,
+    "reroute_model": "grok-4.5",
+    "reroute_answer": "Yes",
+    "reroute_correct": true
+  },
+  {
+    "id": "5adddccd5542997dc7907069",
+    "question": "Aside from the Apple Remote, what other device can control the program Apple Remote was originally designed to interact with?",
+    "gold": "keyboard function keys",
+    "orig_model": "grok-3-mini",
+    "orig_answer": "The Apple Remote launched in 2005 alongside the iMac G5 and was built specifically to drive Apple\u2019s Front Row media-center software on Macs. Front Row accepted input from any paired Bluetooth keyboard (arrow keys, space bar, escape, etc.), so the keyboard is the other control device.\n\nFinal",
+    "orig_correct": false,
+    "reroute_model": "grok-4.5",
+    "reroute_answer": "keyboard",
+    "reroute_correct": true
+  },
+  {
+    "id": "5ae2070a5542994d89d5b313",
+    "question": "Which performance act has a higher instrument to person ratio, Badly Drawn Boy or Wolf Alice? ",
+    "gold": "Badly Drawn Boy",
+    "orig_model": "grok-3-mini",
+    "orig_answer": "Badly Drawn Boy \n\nThe query concerns live-performance instrumentation. Badly Drawn Boy is the solo stage name of Damon Gough; a typical set therefore places one performer in front of multiple instruments (acoustic/electric guitar, harmonica, keyboards, laptop/looping devices). Wolf Alice is",
+    "orig_correct": true,
+    "reroute_model": "grok-4.5",
+    "reroute_answer": "Badly Drawn Boy",
+    "reroute_correct": true
+  }
+]

@@ -2,3 +2,6 @@
 .env
 **/.env
 rag-gate-prd.md
+SESSION_LOG.md
+__pycache__/
+benchmarks/hotpotqa_bigN_sample.json

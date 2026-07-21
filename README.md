@@ -2,13 +2,13 @@
 
 A lightweight, asynchronous Rust proxy that intercepts OpenAI-compatible LLM API streams, evaluates token-level logprob confidence in real time, and gates generation output into one of three decisions: **ANSWER**, **ABSTAIN**, or **ESCALATE**.
 
-It uses a signal that's already computed for free during inference token logprobs  as a real-time confidence gate, instead of a post-hoc LLM judge (expensive, slow) or a retrieval-score threshold (cheap, but empirically flat with model uncertainty).
+It uses a signal that's already computed for free during inference token logprobs as a real-time confidence gate, instead of a post-hoc LLM judge (expensive, slow) or a retrieval-score threshold (cheap, but empirically flat with model uncertainty).
 
 It is not a model, and not a RAG framework. It's a wire-level proxy with one job: decide if the model is confident enough to trust.
 
 ## Status
 
-Pre-1.0, but functionally verified. The core proxy, confidence evaluator, calibration endpoint, and SSE chunk reassembly (see Known limitations) are implemented and tested including live end-to-end verification against both a mock upstream and a real OpenAI-compatible endpoint (xAI's Grok API). It has not been tested against Ollama specifically. Published on crates.io as `rag-gate`.
+Pre-1.0, but functionally verified. The core proxy, confidence evaluator, calibration endpoint, and stream chunk reassembly (see Known limitations) are implemented and tested including live end-to-end verification against both a mock upstream and a real OpenAI-compatible endpoint (xAI's Grok API). An Ollama `/api/chat` transport (NDJSON) is implemented and tested end-to-end against a mock Ollama upstream — but see Known limitations for why confidence gating is inert against Ollama today. Published on crates.io as `rag-gate`.
 
 ## Quick start
 
@@ -55,9 +55,11 @@ beta <= confidence < alpha -> ESCALATE  (cut stream, emit decision frame)
 confidence < beta          -> ABSTAIN   (cut stream, emit decision frame)
 ```
 
-Evaluation happens incrementally per SSE chunk, with a small lookahead buffer so tokens aren't forwarded before the first confidence check has a chance to fire.
+Evaluation happens incrementally per stream chunk, with a small lookahead buffer so tokens aren't forwarded before the first confidence check has a chance to fire.
 
-Default thresholds: `alpha = -0.5`, `beta = -1.2`.
+A **warmup floor** (`min_tokens`, default 4) suppresses any ABSTAIN/ESCALATE until at least that many tokens have been evaluated: the mean over one or two tokens is too noisy to act on — a single low-probability opening token ("Well", "Hmm") shouldn't cut an answer that would have recovered. Set `min_tokens = 1` to disable.
+
+Default thresholds: `alpha = -0.5`, `beta = -1.2`, `min_tokens = 4`.
 
 ## Configuration
 
@@ -68,9 +70,14 @@ Via `rag-gate.toml` in the working directory, or environment variables (env vars
 listen_addr = "0.0.0.0:8080"
 upstream_url = "https://api.openai.com"
 
+inject_logprobs = true
+max_body_bytes = 2097152
+connect_timeout_secs = 10
+
 [thresholds]
 answer_alpha = -0.5
 abstain_beta = -1.2
+min_tokens = 4
 ```
 
 | Env var | Overrides |
@@ -80,8 +87,12 @@ abstain_beta = -1.2
 | `RAGGATE_UPSTREAM_URL` | `proxy.upstream_url` |
 | `RAGGATE_ANSWER_ALPHA` | `thresholds.answer_alpha` |
 | `RAGGATE_ABSTAIN_BETA` | `thresholds.abstain_beta` |
+| `RAGGATE_MIN_TOKENS` | `thresholds.min_tokens` |
+| `RAGGATE_INJECT_LOGPROBS` | `inject_logprobs` — set `false` for upstreams that reject `logprobs: true` (e.g. Gemini) |
+| `RAGGATE_MAX_BODY_BYTES` | `max_body_bytes` — client request body cap (default 2 MiB) |
+| `RAGGATE_CONNECT_TIMEOUT_SECS` | `connect_timeout_secs` — upstream connect timeout (default 10s) |
 
-The `Authorization` header on incoming requests is forwarded to the upstream as-is; `rag-gate` never stores or logs API keys.
+All incoming request headers except hop-by-hop headers (`Connection`, `Transfer-Encoding`, `Host`, etc.) are forwarded to the upstream as-is — so provider-specific auth headers like Azure's `api-key`, Anthropic-compat's `x-api-key`, and `OpenAI-Organization` pass through, not just `Authorization`. `rag-gate` never stores or logs API keys.
 
 ## Calibration
 
@@ -132,13 +143,18 @@ Both comfortably under the &lt;5ms p99 target. This measures rag-gate's own proc
 | `raggate_decisions_total{decision}` | Counter | ANSWER / ABSTAIN / ESCALATE counts |
 | `raggate_confidence_score` | Histogram | Distribution of confidence scores |
 | `raggate_tokens_evaluated` | Histogram | Tokens evaluated before decision |
+| `raggate_token_savings_total` | Counter | Tokens saved by cutting the stream early on ABSTAIN/ESCALATE |
 | `raggate_proxy_latency_ms` | Histogram | Added latency vs. direct API call |
+
+`GET /healthz` returns `ok` for liveness/readiness probes (no auth, no upstream call). The server drains in-flight requests on `SIGINT`/`SIGTERM` before exiting.
 
 ## Known limitations
 
-- Only OpenAI-compatible `/v1/chat/completions` is supported today. An Ollama `/api/chat` adapter is planned but not built. Note: not every "OpenAI-compatible" API accepts the auto-injected `logprobs: true` field (e.g. Google's Gemini OpenAI-compat layer rejects it) — rag-gate doesn't yet detect and adapt to that per-upstream.
-- Escalation routing (automatic retry to a fallback model on ESCALATE) is not yet implemented — the client currently has to handle that itself.
-- The SSE chunk parser reassembles events split across TCP/HTTP chunk boundaries rather than assuming one poll equals one complete frame; covered by dedicated tests, but real-world traffic patterns are inherently broader than any test suite.
+- **Ollama's native** `/api/chat` **(NDJSON) is supported as a transport** — `rag-gate` reassembles its newline-delimited stream correctly. Confidence gating, however, is inactive against Ollama: it returns no per-token logprobs on either `/api/chat` or its OpenAI-compat `/v1/chat/completions` layer — the compat request field is silently dropped, and the feature request to add it was [closed as not planned](https://github.com/ollama/ollama/issues/16117) (see also [#13638](https://github.com/ollama/ollama/issues/13638)). With no confidence signal on the wire, the gate no-ops and every Ollama response passes through as ANSWER. The transport is in place, so gating will activate automatically if Ollama ever emits logprobs in the OpenAI shape.
+- Not every "OpenAI-compatible" API accepts the auto-injected `logprobs: true` field — Google's Gemini OpenAI-compat layer rejects it with a 400. Set `inject_logprobs = false` (or `RAGGATE_INJECT_LOGPROBS=false`) for those upstreams; gating then only fires if the client itself requests logprobs.
+- **Confidence is temperature-dependent.** Mean token logprob rises toward 0 as sampling temperature drops (at temperature 0 the model always picks the argmax token, whose logprob is near 0). So a pipeline running the upstream at very low temperature will see near-perfect confidence on nearly everything and the gate will rarely fire — calibrate your thresholds at the temperature you actually serve at, and re-calibrate if you change it. (This also means "just retry at a lower temperature" is not a reliable recovery strategy — it inflates the confidence score without necessarily improving the answer; see `benchmarks/`.)
+- Escalation routing (automatic retry/reroute to a fallback model on ESCALATE) is not yet implemented — the client currently has to handle that itself, and the evidence so far does not justify building it. Two recovery strategies were evaluated (see `benchmarks/`): a `lower_temperature` retry, which is *mechanistically* disqualified because low temperature inflates the confidence metric without necessarily improving the answer; and **rerouting to a stronger model** (`grok-3-mini`→`grok-4.5`, 45-question low-confidence band), which moved band accuracy 35.6%→42.2% but with **6 fixes against 3 regressions — net +3, McNemar p = 0.51, not significant**. Rerouting is not a free win (it also breaks answers), so neither strategy is currently shipped.
+- The stream chunk parser reassembles both SSE events (`\n\n`) and NDJSON lines (`\n`) split across TCP/HTTP chunk boundaries rather than assuming one poll equals one complete frame; covered by dedicated tests, but real-world traffic patterns are inherently broader than any test suite.
 - Added-latency overhead has been benchmarked (see Performance) but concurrent-stream throughput has not.
 
 ## Development
