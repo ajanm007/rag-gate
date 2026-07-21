@@ -1,6 +1,6 @@
 # rag-gate
 
-A lightweight, asynchronous Rust proxy that intercepts OpenAI-compatible LLM API streams, evaluates token-level logprob confidence in real time, and gates generation output into one of three decisions: **ANSWER**, **ABSTAIN**, or **ESCALATE**.
+A fast, asynchronous **inference-time** (while the model is actively generating tokens) **confidence middleware** that intercepts OpenAI-compatible LLM API streams, evaluates token-level logprob confidence in real time, and gates generation output into one of three decisions: **ANSWER**, **ABSTAIN**, or **ESCALATE**.
 
 It uses a signal that's already computed for free during inference token logprobs as a real-time confidence gate, instead of a post-hoc LLM judge (expensive, slow) or a retrieval-score threshold (cheap, but empirically flat with model uncertainty).
 
@@ -42,6 +42,32 @@ curl -N -X POST http://127.0.0.1:8080/v1/chat/completions \
 ```
 
 ## How it works
+
+```mermaid
+flowchart TD
+    A([Client Request]) --> B[rag-gate]
+    B --> C[Inject stream=true\nlogprobs=true]
+    C --> D[Forward to upstream\nLLM API]
+    D --> E[SSE / NDJSON stream\nwith per-token logprobs]
+    E --> F{Token count\n>= min_tokens?}
+    F -- No / Warmup --> G[Buffer token\nPass through]
+    G --> E
+    F -- Yes --> H{Mean logprob\nconfidence?}
+    H -- "conf >= alpha\n(e.g. ≥ -0.5)" --> I[✅ ANSWER\nStream continues normally]
+    H -- "beta <= conf < alpha\n(e.g. -1.2 to -0.5)" --> J[⚠️ ESCALATE\nCut stream\nEmit decision frame]
+    H -- "conf < beta\n(e.g. < -1.2)" --> K[❌ ABSTAIN\nCut stream\nEmit decision frame]
+    I --> L([Client receives\nfull response])
+    J --> M([Client receives\ndecision frame\n+ handles retry])
+    K --> N([Client receives\ndecision frame\n+ suppresses answer])
+
+    style I fill:#1a7a1a,color:#fff
+    style J fill:#b37400,color:#fff
+    style K fill:#8b1a1a,color:#fff
+    style A fill:#1a3a6b,color:#fff
+    style L fill:#1a3a6b,color:#fff
+    style M fill:#1a3a6b,color:#fff
+    style N fill:#1a3a6b,color:#fff
+```
 
 Confidence is the mean token logprob over the generated sequence so far:
 
