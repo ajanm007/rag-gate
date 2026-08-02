@@ -1,8 +1,8 @@
 [package]
 name = "rag-gate"
-version = "0.2.0"
+version = "0.2.1"
 edition = "2024"
-description = "Logprob-based confidence middleware for selective generation in RAG pipelines"
+description = "Inference-time confidence middleware for RAG pipelines — gates LLM streams into ANSWER, ABSTAIN, or ESCALATE using token logprobs"
 keywords = ["llm", "rag", "confidence", "proxy", "selective-generation"]
 categories = ["web-programming::http-server", "science"]
 repository = "https://github.com/ajanm007/rag-gate"
