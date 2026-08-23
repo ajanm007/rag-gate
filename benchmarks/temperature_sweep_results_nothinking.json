@@ -1,0 +1,1222 @@
+{
+  "dry_run": false,
+  "model": "grok-3-mini",
+  "api_base": "https://api.x.ai/v1/chat/completions",
+  "reasoning_effort": "none",
+  "generated_at": "2026-08-22T14:45:13.066312+00:00",
+  "rules_version": "signal_decision.md pre-registered 2026-08-22",
+  "per_question": {
+    "0.0": [
+      {
+        "id": "5a8b57f25542995d1e6f1371",
+        "question": "Were Scott Derrickson and Ed Wood of the same nationality?",
+        "gold": "yes",
+        "model_answer": "Yes",
+        "confidence": 0.0,
+        "n_tokens": 1,
+        "correct": true
+      },
+      {
+        "id": "5a8c7595554299585d9e36b6",
+        "question": "What government position was held by the woman who portrayed Corliss Archer in the film Kiss and Tell?",
+        "gold": "Chief of Protocol",
+        "model_answer": "U.S. Ambassador to Ghana",
+        "confidence": 8.2412346e-09,
+        "n_tokens": 6,
+        "correct": false
+      },
+      {
+        "id": "5a85ea095542994775f606a8",
+        "question": "What science fantasy young adult series, told in first person, has a set of companion books narrating the stories of enslaved worlds and alien species?",
+        "gold": "Animorphs",
+        "model_answer": "Animorphs (The Hork-Bajir Chronicles, The Andalite Chronicles, Visser, etc.)",
+        "confidence": -7.700396663139049e-09,
+        "n_tokens": 21,
+        "correct": true
+      },
+      {
+        "id": "5adbf0a255429947ff17385a",
+        "question": "Are the Laleli Mosque and Esma Sultan Mansion located in the same neighborhood?",
+        "gold": "no",
+        "model_answer": "No",
+        "confidence": 2.9802322e-08,
+        "n_tokens": 1,
+        "correct": true
+      },
+      {
+        "id": "5a8e3ea95542995a26add48d",
+        "question": "The director of the romantic comedy \"Big Stone Gap\" is based in what New York city?",
+        "gold": "Greenwich Village, New York City",
+        "model_answer": "New York City",
+        "confidence": 2.4408412666666666e-08,
+        "n_tokens": 3,
+        "correct": true
+      },
+      {
+        "id": "5abd94525542992ac4f382d2",
+        "question": "2014 S/S is the debut album of a South Korean boy group that was formed by who?",
+        "gold": "YG Entertainment",
+        "model_answer": "YG Entertainment",
+        "confidence": 2.8841896100000003e-08,
+        "n_tokens": 2,
+        "correct": true
+      },
+      {
+        "id": "5a85b2d95542997b5ce40028",
+        "question": "Who was known by his stage name Aladin and helped organizations improve their performance as a consultant?",
+        "gold": "Eenasul Fateh",
+        "model_answer": "Aladdin (or Aladin) \u2013 the stage name of a performance-improvement consultant.",
+        "confidence": -7.230685222222223e-09,
+        "n_tokens": 18,
+        "correct": false
+      },
+      {
+        "id": "5a87ab905542996e4f3088c1",
+        "question": "The arena where the Lewiston Maineiacs played their home games can seat how many people?",
+        "gold": "3,677 seated",
+        "model_answer": "3,677",
+        "confidence": 6.014789999999992e-10,
+        "n_tokens": 3,
+        "correct": true
+      },
+      {
+        "id": "5a7bbb64554299042af8f7cc",
+        "question": "Who is older, Annie Morton or Terry Richardson?",
+        "gold": "Terry Richardson",
+        "model_answer": "Terry Richardson",
+        "confidence": 1.65528035e-10,
+        "n_tokens": 2,
+        "correct": true
+      },
+      {
+        "id": "5a8db19d5542994ba4e3dd00",
+        "question": "Are Local H and For Against both from the United States?",
+        "gold": "yes",
+        "model_answer": "Yes",
+        "confidence": -2.2351742e-08,
+        "n_tokens": 1,
+        "correct": true
+      },
+      {
+        "id": "5a7166395542994082a3e814",
+        "question": "What is the name of the fight song of the university whose main campus is in Lawrence, Kansas and whose branch campuses are in the Kansas City metropolitan area?",
+        "gold": "Kansas Song",
+        "model_answer": "Kansas Song (I'm a Jayhawk)",
+        "confidence": -9.915311375000001e-09,
+        "n_tokens": 8,
+        "correct": true
+      },
+      {
+        "id": "5a877e5d5542993e715abf7d",
+        "question": "What screenwriter with credits for \"Evolution\" co-wrote a film starring Nicolas Cage and T\u00e9a Leoni?",
+        "gold": "David Weissman",
+        "model_answer": "Larry Doyle",
+        "confidence": 1.4901161e-08,
+        "n_tokens": 2,
+        "correct": false
+      },
+      {
+        "id": "5ab3b0bf5542992ade7c6e39",
+        "question": "What year did Guns N Roses perform a promo for a movie starring Arnold Schwarzenegger as a former New York Police detective?",
+        "gold": "1999",
+        "model_answer": "1990",
+        "confidence": 7.078051600000001e-08,
+        "n_tokens": 2,
+        "correct": false
+      },
+      {
+        "id": "5ab56e32554299637185c594",
+        "question": "Are Random House Tower and 888 7th Avenue both used for real estate?",
+        "gold": "no",
+        "model_answer": "Yes",
+        "confidence": 0.0,
+        "n_tokens": 1,
+        "correct": false
+      },
+      {
+        "id": "5ab6d09255429954757d337d",
+        "question": "The football manager who recruited David Beckham managed Manchester United during what timeframe?",
+        "gold": "from 1986 to 2013",
+        "model_answer": "1995\u20132013",
+        "confidence": -4.25148756e-08,
+        "n_tokens": 5,
+        "correct": false
+      },
+      {
+        "id": "5a75e05c55429976ec32bc5f",
+        "question": "Brown State Fishing Lake is in a country that has a population of how many inhabitants ?",
+        "gold": "9,984",
+        "model_answer": "1.4 billion",
+        "confidence": 0.0,
+        "n_tokens": 4,
+        "correct": false
+      },
+      {
+        "id": "5ab3e45655429976abd1bcd4",
+        "question": "The Vermont Catamounts men's soccer team currently competes in a conference that was formerly known as what from 1988 to 1996?",
+        "gold": "the North Atlantic Conference",
+        "model_answer": "America East Conference",
+        "confidence": -1.4881758666666667e-08,
+        "n_tokens": 3,
+        "correct": false
+      },
+      {
+        "id": "5ab29c24554299449642c932",
+        "question": "Are Giuseppe Verdi and Ambroise Thomas both Opera composers ?",
+        "gold": "yes",
+        "model_answer": "Yes",
+        "confidence": -2.561137e-09,
+        "n_tokens": 1,
+        "correct": true
+      },
+      {
+        "id": "5ae0d4c9554299603e418468",
+        "question": "Roger O. Egeberg was Assistant Secretary for Health and Scientific Affairs during the administration of a president that served during what years?",
+        "gold": "1969 until 1974",
+        "model_answer": "1969-1974",
+        "confidence": 2.7241185340000003e-08,
+        "n_tokens": 5,
+        "correct": false
+      },
+      {
+        "id": "5a8133725542995ce29dcbdb",
+        "question": "Which writer was from England, Henry Roth or Robert Erskine Childers?",
+        "gold": "Robert Erskine Childers DSC",
+        "model_answer": "Robert Erskine Childers",
+        "confidence": -4.451972973786333e-09,
+        "n_tokens": 6,
+        "correct": true
+      },
+      {
+        "id": "5ae7a8175542993210983ed8",
+        "question": "Which other Mexican Formula One race car driver has held the podium besides the Force India driver born in 1990?",
+        "gold": "Pedro Rodr\u00edguez",
+        "model_answer": "Sergio P\u00e9rez",
+        "confidence": 1.3642419999999717e-12,
+        "n_tokens": 3,
+        "correct": false
+      },
+      {
+        "id": "5ae6050f55429929b0807a5e",
+        "question": "This singer of A Rather Blustery Day also voiced what hedgehog?",
+        "gold": "Sonic",
+        "model_answer": "Sonic the Hedgehog",
+        "confidence": 1.7535110790705008e-09,
+        "n_tokens": 4,
+        "correct": true
+      },
+      {
+        "id": "5adddccd5542997dc7907069",
+        "question": "Aside from the Apple Remote, what other device can control the program Apple Remote was originally designed to interact with?",
+        "gold": "keyboard function keys",
+        "model_answer": "iPhone",
+        "confidence": -7.4505805e-09,
+        "n_tokens": 2,
+        "correct": false
+      },
+      {
+        "id": "5ae2070a5542994d89d5b313",
+        "question": "Which performance act has a higher instrument to person ratio, Badly Drawn Boy or Wolf Alice? ",
+        "gold": "Badly Drawn Boy",
+        "model_answer": "Badly Drawn Boy",
+        "confidence": -5.2155839737436e-09,
+        "n_tokens": 5,
+        "correct": true
+      },
+      {
+        "id": "5ae22b8d554299234fd0440f",
+        "question": "What was the father of Kasper Schmeichel voted to be by the IFFHS in 1992?",
+        "gold": "World's Best Goalkeeper",
+        "model_answer": "World's Best Goalkeeper",
+        "confidence": -1.6464582248000001e-09,
+        "n_tokens": 5,
+        "correct": true
+      }
+    ],
+    "0.2": [
+      {
+        "id": "5a8b57f25542995d1e6f1371",
+        "question": "Were Scott Derrickson and Ed Wood of the same nationality?",
+        "gold": "yes",
+        "model_answer": "Yes",
+        "confidence": -0.42870066,
+        "n_tokens": 1,
+        "correct": true
+      },
+      {
+        "id": "5a8c7595554299585d9e36b6",
+        "question": "What government position was held by the woman who portrayed Corliss Archer in the film Kiss and Tell?",
+        "gold": "Chief of Protocol",
+        "model_answer": "U.S. Ambassador to Ghana",
+        "confidence": -1.5520148552666669e-10,
+        "n_tokens": 6,
+        "correct": false
+      },
+      {
+        "id": "5a85ea095542994775f606a8",
+        "question": "What science fantasy young adult series, told in first person, has a set of companion books narrating the stories of enslaved worlds and alien species?",
+        "gold": "Animorphs",
+        "model_answer": "Animorphs",
+        "confidence": 7.105427333333334e-15,
+        "n_tokens": 3,
+        "correct": true
+      },
+      {
+        "id": "5adbf0a255429947ff17385a",
+        "question": "Are the Laleli Mosque and Esma Sultan Mansion located in the same neighborhood?",
+        "gold": "no",
+        "model_answer": "No",
+        "confidence": 2.9802322e-08,
+        "n_tokens": 1,
+        "correct": true
+      },
+      {
+        "id": "5a8e3ea95542995a26add48d",
+        "question": "The director of the romantic comedy \"Big Stone Gap\" is based in what New York city?",
+        "gold": "Greenwich Village, New York City",
+        "model_answer": "New York City",
+        "confidence": 3.5700700000000003e-09,
+        "n_tokens": 3,
+        "correct": true
+      },
+      {
+        "id": "5abd94525542992ac4f382d2",
+        "question": "2014 S/S is the debut album of a South Korean boy group that was formed by who?",
+        "gold": "YG Entertainment",
+        "model_answer": "YG Entertainment",
+        "confidence": -0.0394449,
+        "n_tokens": 2,
+        "correct": true
+      },
+      {
+        "id": "5a85b2d95542997b5ce40028",
+        "question": "Who was known by his stage name Aladin and helped organizations improve their performance as a consultant?",
+        "gold": "Eenasul Fateh",
+        "model_answer": "Aladdin (or Aladin) \u2013 the stage name of a performance-improvement consultant.",
+        "confidence": -0.08098566565983728,
+        "n_tokens": 18,
+        "correct": false
+      },
+      {
+        "id": "5a87ab905542996e4f3088c1",
+        "question": "The arena where the Lewiston Maineiacs played their home games can seat how many people?",
+        "gold": "3,677 seated",
+        "model_answer": "4,000",
+        "confidence": -0.23104906666665956,
+        "n_tokens": 3,
+        "correct": false
+      },
+      {
+        "id": "5a7bbb64554299042af8f7cc",
+        "question": "Who is older, Annie Morton or Terry Richardson?",
+        "gold": "Terry Richardson",
+        "model_answer": "Terry Richardson",
+        "confidence": -0.071337545,
+        "n_tokens": 2,
+        "correct": true
+      },
+      {
+        "id": "5a8db19d5542994ba4e3dd00",
+        "question": "Are Local H and For Against both from the United States?",
+        "gold": "yes",
+        "model_answer": "Yes",
+        "confidence": 4.092726e-12,
+        "n_tokens": 1,
+        "correct": true
+      },
+      {
+        "id": "5a7166395542994082a3e814",
+        "question": "What is the name of the fight song of the university whose main campus is in Lawrence, Kansas and whose branch campuses are in the Kansas City metropolitan area?",
+        "gold": "Kansas Song",
+        "model_answer": "Kansas Song (I'm a Jayhawk)",
+        "confidence": -0.009861206523710316,
+        "n_tokens": 8,
+        "correct": true
+      },
+      {
+        "id": "5a877e5d5542993e715abf7d",
+        "question": "What screenwriter with credits for \"Evolution\" co-wrote a film starring Nicolas Cage and T\u00e9a Leoni?",
+        "gold": "David Weissman",
+        "model_answer": "Larry Doyle",
+        "confidence": -1.4900905204615001e-08,
+        "n_tokens": 2,
+        "correct": false
+      },
+      {
+        "id": "5ab3b0bf5542992ade7c6e39",
+        "question": "What year did Guns N Roses perform a promo for a movie starring Arnold Schwarzenegger as a former New York Police detective?",
+        "gold": "1999",
+        "model_answer": "1990",
+        "confidence": -0.03944488979516,
+        "n_tokens": 2,
+        "correct": false
+      },
+      {
+        "id": "5ab56e32554299637185c594",
+        "question": "Are Random House Tower and 888 7th Avenue both used for real estate?",
+        "gold": "no",
+        "model_answer": "Yes",
+        "confidence": 1.36424205e-11,
+        "n_tokens": 1,
+        "correct": false
+      },
+      {
+        "id": "5ab6d09255429954757d337d",
+        "question": "The football manager who recruited David Beckham managed Manchester United during what timeframe?",
+        "gold": "from 1986 to 2013",
+        "model_answer": "1995\u20132002",
+        "confidence": -0.0157779307443368,
+        "n_tokens": 5,
+        "correct": false
+      },
+      {
+        "id": "5a75e05c55429976ec32bc5f",
+        "question": "Brown State Fishing Lake is in a country that has a population of how many inhabitants ?",
+        "gold": "9,984",
+        "model_answer": "1.4 billion",
+        "confidence": -0.019722445791863115,
+        "n_tokens": 4,
+        "correct": false
+      },
+      {
+        "id": "5ab3e45655429976abd1bcd4",
+        "question": "The Vermont Catamounts men's soccer team currently competes in a conference that was formerly known as what from 1988 to 1996?",
+        "gold": "the North Atlantic Conference",
+        "model_answer": "America East Conference",
+        "confidence": -1.9170928561239333e-08,
+        "n_tokens": 3,
+        "correct": false
+      },
+      {
+        "id": "5ab29c24554299449642c932",
+        "question": "Are Giuseppe Verdi and Ambroise Thomas both Opera composers ?",
+        "gold": "yes",
+        "model_answer": "Yes",
+        "confidence": 0.0,
+        "n_tokens": 1,
+        "correct": true
+      },
+      {
+        "id": "5ae0d4c9554299603e418468",
+        "question": "Roger O. Egeberg was Assistant Secretary for Health and Scientific Affairs during the administration of a president that served during what years?",
+        "gold": "1969 until 1974",
+        "model_answer": "1969-1974",
+        "confidence": 4.8195986632563996e-09,
+        "n_tokens": 5,
+        "correct": false
+      },
+      {
+        "id": "5a8133725542995ce29dcbdb",
+        "question": "Which writer was from England, Henry Roth or Robert Erskine Childers?",
+        "gold": "Robert Erskine Childers DSC",
+        "model_answer": "Robert Erskine Childers",
+        "confidence": 0.0,
+        "n_tokens": 6,
+        "correct": true
+      },
+      {
+        "id": "5ae7a8175542993210983ed8",
+        "question": "Which other Mexican Formula One race car driver has held the podium besides the Force India driver born in 1990?",
+        "gold": "Pedro Rodr\u00edguez",
+        "model_answer": "Sergio P\u00e9rez",
+        "confidence": 0.0,
+        "n_tokens": 3,
+        "correct": false
+      },
+      {
+        "id": "5ae6050f55429929b0807a5e",
+        "question": "This singer of A Rather Blustery Day also voiced what hedgehog?",
+        "gold": "Sonic",
+        "model_answer": "Sonic the Hedgehog",
+        "confidence": -7.82162607829e-09,
+        "n_tokens": 4,
+        "correct": true
+      },
+      {
+        "id": "5adddccd5542997dc7907069",
+        "question": "Aside from the Apple Remote, what other device can control the program Apple Remote was originally designed to interact with?",
+        "gold": "keyboard function keys",
+        "model_answer": "iPhone (via Remote app)",
+        "confidence": -7.284792571428572e-09,
+        "n_tokens": 7,
+        "correct": false
+      },
+      {
+        "id": "5ae2070a5542994d89d5b313",
+        "question": "Which performance act has a higher instrument to person ratio, Badly Drawn Boy or Wolf Alice? ",
+        "gold": "Badly Drawn Boy",
+        "model_answer": "Badly Drawn Boy",
+        "confidence": -5.2154063999999996e-09,
+        "n_tokens": 5,
+        "correct": true
+      },
+      {
+        "id": "5ae22b8d554299234fd0440f",
+        "question": "What was the father of Kasper Schmeichel voted to be by the IFFHS in 1992?",
+        "gold": "World's Best Goalkeeper",
+        "model_answer": "World's Best Goalkeeper",
+        "confidence": 0.0,
+        "n_tokens": 5,
+        "correct": true
+      }
+    ],
+    "0.5": [
+      {
+        "id": "5a8b57f25542995d1e6f1371",
+        "question": "Were Scott Derrickson and Ed Wood of the same nationality?",
+        "gold": "yes",
+        "model_answer": "Yes",
+        "confidence": -0.5759394,
+        "n_tokens": 1,
+        "correct": true
+      },
+      {
+        "id": "5a8c7595554299585d9e36b6",
+        "question": "What government position was held by the woman who portrayed Corliss Archer in the film Kiss and Tell?",
+        "gold": "Chief of Protocol",
+        "model_answer": "Secretary of State",
+        "confidence": -0.69677449,
+        "n_tokens": 3,
+        "correct": false
+      },
+      {
+        "id": "5a85ea095542994775f606a8",
+        "question": "What science fantasy young adult series, told in first person, has a set of companion books narrating the stories of enslaved worlds and alien species?",
+        "gold": "Animorphs",
+        "model_answer": "Animorphs",
+        "confidence": -1.9324943333333333e-08,
+        "n_tokens": 3,
+        "correct": true
+      },
+      {
+        "id": "5adbf0a255429947ff17385a",
+        "question": "Are the Laleli Mosque and Esma Sultan Mansion located in the same neighborhood?",
+        "gold": "no",
+        "model_answer": "No",
+        "confidence": -0.16022412,
+        "n_tokens": 1,
+        "correct": true
+      },
+      {
+        "id": "5a8e3ea95542995a26add48d",
+        "question": "The director of the romantic comedy \"Big Stone Gap\" is based in what New York city?",
+        "gold": "Greenwich Village, New York City",
+        "model_answer": "New York City",
+        "confidence": -0.08397636662723629,
+        "n_tokens": 3,
+        "correct": true
+      },
+      {
+        "id": "5abd94525542992ac4f382d2",
+        "question": "2014 S/S is the debut album of a South Korean boy group that was formed by who?",
+        "gold": "YG Entertainment",
+        "model_answer": "JYP Entertainment",
+        "confidence": -0.49116202490992306,
+        "n_tokens": 3,
+        "correct": false
+      },
+      {
+        "id": "5a85b2d95542997b5ce40028",
+        "question": "Who was known by his stage name Aladin and helped organizations improve their performance as a consultant?",
+        "gold": "Eenasul Fateh",
+        "model_answer": "Aladdin (or Aladin) \u2014 the performance-improvement consultant \u2014 is not a widely documented public figure, so there is no single, universally recognized individual who fits the description.",
+        "confidence": -0.44490765835382173,
+        "n_tokens": 36,
+        "correct": false
+      },
+      {
+        "id": "5a87ab905542996e4f3088c1",
+        "question": "The arena where the Lewiston Maineiacs played their home games can seat how many people?",
+        "gold": "3,677 seated",
+        "model_answer": "3,677",
+        "confidence": -0.08397634660178938,
+        "n_tokens": 3,
+        "correct": true
+      },
+      {
+        "id": "5a7bbb64554299042af8f7cc",
+        "question": "Who is older, Annie Morton or Terry Richardson?",
+        "gold": "Terry Richardson",
+        "model_answer": "Terry Richardson",
+        "confidence": -0.08011207,
+        "n_tokens": 2,
+        "correct": true
+      },
+      {
+        "id": "5a8db19d5542994ba4e3dd00",
+        "question": "Are Local H and For Against both from the United States?",
+        "gold": "yes",
+        "model_answer": "Yes",
+        "confidence": 3.678724e-08,
+        "n_tokens": 1,
+        "correct": true
+      },
+      {
+        "id": "5a7166395542994082a3e814",
+        "question": "What is the name of the fight song of the university whose main campus is in Lawrence, Kansas and whose branch campuses are in the Kansas City metropolitan area?",
+        "gold": "Kansas Song",
+        "model_answer": "Kansas Song (or \"I'm a Jayhawk\")",
+        "confidence": -0.1067250833826701,
+        "n_tokens": 10,
+        "correct": true
+      },
+      {
+        "id": "5a877e5d5542993e715abf7d",
+        "question": "What screenwriter with credits for \"Evolution\" co-wrote a film starring Nicolas Cage and T\u00e9a Leoni?",
+        "gold": "David Weissman",
+        "model_answer": "David Weissman",
+        "confidence": -0.3541021213079451,
+        "n_tokens": 3,
+        "correct": true
+      },
+      {
+        "id": "5ab3b0bf5542992ade7c6e39",
+        "question": "What year did Guns N Roses perform a promo for a movie starring Arnold Schwarzenegger as a former New York Police detective?",
+        "gold": "1999",
+        "model_answer": "1990",
+        "confidence": -0.30050246905696004,
+        "n_tokens": 2,
+        "correct": false
+      },
+      {
+        "id": "5ab56e32554299637185c594",
+        "question": "Are Random House Tower and 888 7th Avenue both used for real estate?",
+        "gold": "no",
+        "model_answer": "Yes",
+        "confidence": 3.306195e-08,
+        "n_tokens": 1,
+        "correct": false
+      },
+      {
+        "id": "5ab6d09255429954757d337d",
+        "question": "The football manager who recruited David Beckham managed Manchester United during what timeframe?",
+        "gold": "from 1986 to 2013",
+        "model_answer": "1986\u20132013",
+        "confidence": -0.38204484521390575,
+        "n_tokens": 5,
+        "correct": false
+      },
+      {
+        "id": "5a75e05c55429976ec32bc5f",
+        "question": "Brown State Fishing Lake is in a country that has a population of how many inhabitants ?",
+        "gold": "9,984",
+        "model_answer": "1,400,000,000",
+        "confidence": -0.3050367072677509,
+        "n_tokens": 7,
+        "correct": false
+      },
+      {
+        "id": "5ab3e45655429976abd1bcd4",
+        "question": "The Vermont Catamounts men's soccer team currently competes in a conference that was formerly known as what from 1988 to 1996?",
+        "gold": "the North Atlantic Conference",
+        "model_answer": "America East Conference",
+        "confidence": -3.764095333333333e-09,
+        "n_tokens": 3,
+        "correct": false
+      },
+      {
+        "id": "5ab29c24554299449642c932",
+        "question": "Are Giuseppe Verdi and Ambroise Thomas both Opera composers ?",
+        "gold": "yes",
+        "model_answer": "Yes",
+        "confidence": 6.366463e-12,
+        "n_tokens": 1,
+        "correct": true
+      },
+      {
+        "id": "5ae0d4c9554299603e418468",
+        "question": "Roger O. Egeberg was Assistant Secretary for Health and Scientific Affairs during the administration of a president that served during what years?",
+        "gold": "1969 until 1974",
+        "model_answer": "1969-1974",
+        "confidence": -0.03204481507030815,
+        "n_tokens": 5,
+        "correct": false
+      },
+      {
+        "id": "5a8133725542995ce29dcbdb",
+        "question": "Which writer was from England, Henry Roth or Robert Erskine Childers?",
+        "gold": "Robert Erskine Childers DSC",
+        "model_answer": "Robert Erskine Childers",
+        "confidence": -5.808639499999999e-09,
+        "n_tokens": 6,
+        "correct": true
+      },
+      {
+        "id": "5ae7a8175542993210983ed8",
+        "question": "Which other Mexican Formula One race car driver has held the podium besides the Force India driver born in 1990?",
+        "gold": "Pedro Rodr\u00edguez",
+        "model_answer": "Sergio P\u00e9rez",
+        "confidence": -2.5582267e-08,
+        "n_tokens": 3,
+        "correct": false
+      },
+      {
+        "id": "5ae6050f55429929b0807a5e",
+        "question": "This singer of A Rather Blustery Day also voiced what hedgehog?",
+        "gold": "Sonic",
+        "model_answer": "Sonic the Hedgehog",
+        "confidence": -0.02505163967107,
+        "n_tokens": 4,
+        "correct": true
+      },
+      {
+        "id": "5adddccd5542997dc7907069",
+        "question": "Aside from the Apple Remote, what other device can control the program Apple Remote was originally designed to interact with?",
+        "gold": "keyboard function keys",
+        "model_answer": "iPhone",
+        "confidence": -0.050103304805685,
+        "n_tokens": 2,
+        "correct": false
+      },
+      {
+        "id": "5ae2070a5542994d89d5b313",
+        "question": "Which performance act has a higher instrument to person ratio, Badly Drawn Boy or Wolf Alice? ",
+        "gold": "Badly Drawn Boy",
+        "model_answer": "Badly Drawn Boy",
+        "confidence": -0.025385604,
+        "n_tokens": 5,
+        "correct": true
+      },
+      {
+        "id": "5ae22b8d554299234fd0440f",
+        "question": "What was the father of Kasper Schmeichel voted to be by the IFFHS in 1992?",
+        "gold": "World's Best Goalkeeper",
+        "model_answer": "World's Best Goalkeeper",
+        "confidence": -1.749140200000001e-09,
+        "n_tokens": 5,
+        "correct": true
+      }
+    ],
+    "0.7": [
+      {
+        "id": "5a8b57f25542995d1e6f1371",
+        "question": "Were Scott Derrickson and Ed Wood of the same nationality?",
+        "gold": "yes",
+        "model_answer": "Yes",
+        "confidence": -0.60784113,
+        "n_tokens": 1,
+        "correct": true
+      },
+      {
+        "id": "5a8c7595554299585d9e36b6",
+        "question": "What government position was held by the woman who portrayed Corliss Archer in the film Kiss and Tell?",
+        "gold": "Chief of Protocol",
+        "model_answer": "U.S. Ambassador to Ghana",
+        "confidence": -0.034571098393529044,
+        "n_tokens": 6,
+        "correct": false
+      },
+      {
+        "id": "5a85ea095542994775f606a8",
+        "question": "What science fantasy young adult series, told in first person, has a set of companion books narrating the stories of enslaved worlds and alien species?",
+        "gold": "Animorphs",
+        "model_answer": "Animorphs (Megamorphs / Chronicles)",
+        "confidence": -0.4759916821463273,
+        "n_tokens": 10,
+        "correct": true
+      },
+      {
+        "id": "5adbf0a255429947ff17385a",
+        "question": "Are the Laleli Mosque and Esma Sultan Mansion located in the same neighborhood?",
+        "gold": "no",
+        "model_answer": "No",
+        "confidence": -0.15501666,
+        "n_tokens": 1,
+        "correct": true
+      },
+      {
+        "id": "5a8e3ea95542995a26add48d",
+        "question": "The director of the romantic comedy \"Big Stone Gap\" is based in what New York city?",
+        "gold": "Greenwich Village, New York City",
+        "model_answer": "New York City",
+        "confidence": -0.08991884638477966,
+        "n_tokens": 3,
+        "correct": true
+      },
+      {
+        "id": "5abd94525542992ac4f382d2",
+        "question": "2014 S/S is the debut album of a South Korean boy group that was formed by who?",
+        "gold": "YG Entertainment",
+        "model_answer": "JYP Entertainment",
+        "confidence": -0.6857743915598893,
+        "n_tokens": 3,
+        "correct": false
+      },
+      {
+        "id": "5a85b2d95542997b5ce40028",
+        "question": "Who was known by his stage name Aladin and helped organizations improve their performance as a consultant?",
+        "gold": "Eenasul Fateh",
+        "model_answer": "W. Edwards Deming",
+        "confidence": -0.1465089877299774,
+        "n_tokens": 5,
+        "correct": false
+      },
+      {
+        "id": "5a87ab905542996e4f3088c1",
+        "question": "The arena where the Lewiston Maineiacs played their home games can seat how many people?",
+        "gold": "3,677 seated",
+        "model_answer": "3,677",
+        "confidence": -0.11440796676989433,
+        "n_tokens": 3,
+        "correct": true
+      },
+      {
+        "id": "5a7bbb64554299042af8f7cc",
+        "question": "Who is older, Annie Morton or Terry Richardson?",
+        "gold": "Terry Richardson",
+        "model_answer": "Terry Richardson",
+        "confidence": -0.199234365,
+        "n_tokens": 2,
+        "correct": true
+      },
+      {
+        "id": "5a8db19d5542994ba4e3dd00",
+        "question": "Are Local H and For Against both from the United States?",
+        "gold": "yes",
+        "model_answer": "Yes.",
+        "confidence": -1.2075191667638066,
+        "n_tokens": 2,
+        "correct": true
+      },
+      {
+        "id": "5a7166395542994082a3e814",
+        "question": "What is the name of the fight song of the university whose main campus is in Lawrence, Kansas and whose branch campuses are in the Kansas City metropolitan area?",
+        "gold": "Kansas Song",
+        "model_answer": "Kansas Song (I'm a Jayhawk)",
+        "confidence": -0.13040771345029326,
+        "n_tokens": 8,
+        "correct": true
+      },
+      {
+        "id": "5a877e5d5542993e715abf7d",
+        "question": "What screenwriter with credits for \"Evolution\" co-wrote a film starring Nicolas Cage and T\u00e9a Leoni?",
+        "gold": "David Weissman",
+        "model_answer": "Larry Doyle",
+        "confidence": -0.720715015,
+        "n_tokens": 2,
+        "correct": false
+      },
+      {
+        "id": "5ab3b0bf5542992ade7c6e39",
+        "question": "What year did Guns N Roses perform a promo for a movie starring Arnold Schwarzenegger as a former New York Police detective?",
+        "gold": "1999",
+        "model_answer": "1999",
+        "confidence": -1.7279777313735485,
+        "n_tokens": 2,
+        "correct": true
+      },
+      {
+        "id": "5ab56e32554299637185c594",
+        "question": "Are Random House Tower and 888 7th Avenue both used for real estate?",
+        "gold": "no",
+        "model_answer": "Yes",
+        "confidence": -1.1175871e-08,
+        "n_tokens": 1,
+        "correct": false
+      },
+      {
+        "id": "5ab6d09255429954757d337d",
+        "question": "The football manager who recruited David Beckham managed Manchester United during what timeframe?",
+        "gold": "from 1986 to 2013",
+        "model_answer": "1995\u20132013",
+        "confidence": -0.3866865347684172,
+        "n_tokens": 5,
+        "correct": false
+      },
+      {
+        "id": "5a75e05c55429976ec32bc5f",
+        "question": "Brown State Fishing Lake is in a country that has a population of how many inhabitants ?",
+        "gold": "9,984",
+        "model_answer": "4.3 million",
+        "confidence": -1.2606534542897898,
+        "n_tokens": 4,
+        "correct": false
+      },
+      {
+        "id": "5ab3e45655429976abd1bcd4",
+        "question": "The Vermont Catamounts men's soccer team currently competes in a conference that was formerly known as what from 1988 to 1996?",
+        "gold": "the North Atlantic Conference",
+        "model_answer": "America East Conference",
+        "confidence": -1.583240787544e-08,
+        "n_tokens": 3,
+        "correct": false
+      },
+      {
+        "id": "5ab29c24554299449642c932",
+        "question": "Are Giuseppe Verdi and Ambroise Thomas both Opera composers ?",
+        "gold": "yes",
+        "model_answer": "Yes",
+        "confidence": 2.5975169e-08,
+        "n_tokens": 1,
+        "correct": true
+      },
+      {
+        "id": "5ae0d4c9554299603e418468",
+        "question": "Roger O. Egeberg was Assistant Secretary for Health and Scientific Affairs during the administration of a president that served during what years?",
+        "gold": "1969 until 1974",
+        "model_answer": "1969-1974",
+        "confidence": -0.031003339434210003,
+        "n_tokens": 5,
+        "correct": false
+      },
+      {
+        "id": "5a8133725542995ce29dcbdb",
+        "question": "Which writer was from England, Henry Roth or Robert Erskine Childers?",
+        "gold": "Robert Erskine Childers DSC",
+        "model_answer": "Robert Erskine Childers",
+        "confidence": 1.2227777350666668e-09,
+        "n_tokens": 6,
+        "correct": true
+      },
+      {
+        "id": "5ae7a8175542993210983ed8",
+        "question": "Which other Mexican Formula One race car driver has held the podium besides the Force India driver born in 1990?",
+        "gold": "Pedro Rodr\u00edguez",
+        "model_answer": "Sergio P\u00e9rez",
+        "confidence": -3.182019e-09,
+        "n_tokens": 3,
+        "correct": false
+      },
+      {
+        "id": "5ae6050f55429929b0807a5e",
+        "question": "This singer of A Rather Blustery Day also voiced what hedgehog?",
+        "gold": "Sonic",
+        "model_answer": "Sonic the Hedgehog",
+        "confidence": -0.011730528550371206,
+        "n_tokens": 4,
+        "correct": true
+      },
+      {
+        "id": "5adddccd5542997dc7907069",
+        "question": "Aside from the Apple Remote, what other device can control the program Apple Remote was originally designed to interact with?",
+        "gold": "keyboard function keys",
+        "model_answer": "iPod (via click wheel)",
+        "confidence": -0.385581405069871,
+        "n_tokens": 7,
+        "correct": false
+      },
+      {
+        "id": "5ae2070a5542994d89d5b313",
+        "question": "Which performance act has a higher instrument to person ratio, Badly Drawn Boy or Wolf Alice? ",
+        "gold": "Badly Drawn Boy",
+        "model_answer": "Wolf Alice",
+        "confidence": -0.6829887,
+        "n_tokens": 2,
+        "correct": false
+      },
+      {
+        "id": "5ae22b8d554299234fd0440f",
+        "question": "What was the father of Kasper Schmeichel voted to be by the IFFHS in 1992?",
+        "gold": "World's Best Goalkeeper",
+        "model_answer": "World's Best Goalkeeper",
+        "confidence": 2.23983078e-08,
+        "n_tokens": 5,
+        "correct": true
+      }
+    ],
+    "1.0": [
+      {
+        "id": "5a8b57f25542995d1e6f1371",
+        "question": "Were Scott Derrickson and Ed Wood of the same nationality?",
+        "gold": "yes",
+        "model_answer": "No",
+        "confidence": -0.75759906,
+        "n_tokens": 1,
+        "correct": false
+      },
+      {
+        "id": "5a8c7595554299585d9e36b6",
+        "question": "What government position was held by the woman who portrayed Corliss Archer in the film Kiss and Tell?",
+        "gold": "Chief of Protocol",
+        "model_answer": "Secretary of State",
+        "confidence": -0.790700862330196,
+        "n_tokens": 3,
+        "correct": false
+      },
+      {
+        "id": "5a85ea095542994775f606a8",
+        "question": "What science fantasy young adult series, told in first person, has a set of companion books narrating the stories of enslaved worlds and alien species?",
+        "gold": "Animorphs",
+        "model_answer": "Animorphs (The Hork-Bajir Chronicles, The Andalite Chronicles, Visser, etc.)",
+        "confidence": -0.17374389568334708,
+        "n_tokens": 21,
+        "correct": true
+      },
+      {
+        "id": "5adbf0a255429947ff17385a",
+        "question": "Are the Laleli Mosque and Esma Sultan Mansion located in the same neighborhood?",
+        "gold": "no",
+        "model_answer": "Yes",
+        "confidence": -1.3132617,
+        "n_tokens": 1,
+        "correct": false
+      },
+      {
+        "id": "5a8e3ea95542995a26add48d",
+        "question": "The director of the romantic comedy \"Big Stone Gap\" is based in what New York city?",
+        "gold": "Greenwich Village, New York City",
+        "model_answer": "New York City",
+        "confidence": -0.24642538820350135,
+        "n_tokens": 3,
+        "correct": true
+      },
+      {
+        "id": "5abd94525542992ac4f382d2",
+        "question": "2014 S/S is the debut album of a South Korean boy group that was formed by who?",
+        "gold": "YG Entertainment",
+        "model_answer": "JYP Entertainment",
+        "confidence": -0.4943441157275323,
+        "n_tokens": 3,
+        "correct": false
+      },
+      {
+        "id": "5a85b2d95542997b5ce40028",
+        "question": "Who was known by his stage name Aladin and helped organizations improve their performance as a consultant?",
+        "gold": "Eenasul Fateh",
+        "model_answer": "L. Ron Hubbard",
+        "confidence": -1.3444931528101007,
+        "n_tokens": 4,
+        "correct": false
+      },
+      {
+        "id": "5a87ab905542996e4f3088c1",
+        "question": "The arena where the Lewiston Maineiacs played their home games can seat how many people?",
+        "gold": "3,677 seated",
+        "model_answer": "4,000",
+        "confidence": -0.40570513464218805,
+        "n_tokens": 3,
+        "correct": false
+      },
+      {
+        "id": "5a7bbb64554299042af8f7cc",
+        "question": "Who is older, Annie Morton or Terry Richardson?",
+        "gold": "Terry Richardson",
+        "model_answer": "Annie Morton is older.",
+        "confidence": -0.5529206572724806,
+        "n_tokens": 5,
+        "correct": false
+      },
+      {
+        "id": "5a8db19d5542994ba4e3dd00",
+        "question": "Are Local H and For Against both from the United States?",
+        "gold": "yes",
+        "model_answer": "Yes",
+        "confidence": -0.06993624,
+        "n_tokens": 1,
+        "correct": true
+      },
+      {
+        "id": "5a7166395542994082a3e814",
+        "question": "What is the name of the fight song of the university whose main campus is in Lawrence, Kansas and whose branch campuses are in the Kansas City metropolitan area?",
+        "gold": "Kansas Song",
+        "model_answer": "Kansas Song (I'm a Jayhawk)",
+        "confidence": -0.22689223444601186,
+        "n_tokens": 8,
+        "correct": true
+      },
+      {
+        "id": "5a877e5d5542993e715abf7d",
+        "question": "What screenwriter with credits for \"Evolution\" co-wrote a film starring Nicolas Cage and T\u00e9a Leoni?",
+        "gold": "David Weissman",
+        "model_answer": "Roger Corman",
+        "confidence": -2.814828803337239,
+        "n_tokens": 3,
+        "correct": false
+      },
+      {
+        "id": "5ab3b0bf5542992ade7c6e39",
+        "question": "What year did Guns N Roses perform a promo for a movie starring Arnold Schwarzenegger as a former New York Police detective?",
+        "gold": "1999",
+        "model_answer": "1995",
+        "confidence": -1.0227154675,
+        "n_tokens": 2,
+        "correct": false
+      },
+      {
+        "id": "5ab56e32554299637185c594",
+        "question": "Are Random House Tower and 888 7th Avenue both used for real estate?",
+        "gold": "no",
+        "model_answer": "Yes.",
+        "confidence": -0.778405588,
+        "n_tokens": 2,
+        "correct": false
+      },
+      {
+        "id": "5ab6d09255429954757d337d",
+        "question": "The football manager who recruited David Beckham managed Manchester United during what timeframe?",
+        "gold": "from 1986 to 2013",
+        "model_answer": "1992\u20132002 (specifically Nov 1992\u2013Nov 2001, with brief returns 2002)",
+        "confidence": -1.3436877528943345,
+        "n_tokens": 24,
+        "correct": false
+      },
+      {
+        "id": "5a75e05c55429976ec32bc5f",
+        "question": "Brown State Fishing Lake is in a country that has a population of how many inhabitants ?",
+        "gold": "9,984",
+        "model_answer": "The United States has approximately 333 million inhabitants.",
+        "confidence": -0.7902542663097105,
+        "n_tokens": 10,
+        "correct": false
+      },
+      {
+        "id": "5ab3e45655429976abd1bcd4",
+        "question": "The Vermont Catamounts men's soccer team currently competes in a conference that was formerly known as what from 1988 to 1996?",
+        "gold": "the North Atlantic Conference",
+        "model_answer": "America East Conference",
+        "confidence": -0.058843603088375995,
+        "n_tokens": 3,
+        "correct": false
+      },
+      {
+        "id": "5ab29c24554299449642c932",
+        "question": "Are Giuseppe Verdi and Ambroise Thomas both Opera composers ?",
+        "gold": "yes",
+        "model_answer": "Yes",
+        "confidence": 2.142042e-08,
+        "n_tokens": 1,
+        "correct": true
+      },
+      {
+        "id": "5ae0d4c9554299603e418468",
+        "question": "Roger O. Egeberg was Assistant Secretary for Health and Scientific Affairs during the administration of a president that served during what years?",
+        "gold": "1969 until 1974",
+        "model_answer": "1969-1974",
+        "confidence": -0.0562300349989042,
+        "n_tokens": 5,
+        "correct": false
+      },
+      {
+        "id": "5a8133725542995ce29dcbdb",
+        "question": "Which writer was from England, Henry Roth or Robert Erskine Childers?",
+        "gold": "Robert Erskine Childers DSC",
+        "model_answer": "Robert Erskine Childers",
+        "confidence": -4.451972973786333e-09,
+        "n_tokens": 6,
+        "correct": true
+      },
+      {
+        "id": "5ae7a8175542993210983ed8",
+        "question": "Which other Mexican Formula One race car driver has held the podium besides the Force India driver born in 1990?",
+        "gold": "Pedro Rodr\u00edguez",
+        "model_answer": "Sergio P\u00e9rez",
+        "confidence": -0.011215270857452666,
+        "n_tokens": 3,
+        "correct": false
+      },
+      {
+        "id": "5ae6050f55429929b0807a5e",
+        "question": "This singer of A Rather Blustery Day also voiced what hedgehog?",
+        "gold": "Sonic",
+        "model_answer": "Winnie the Pooh (specifically, Pooh voiced by Jim Cummings, also known for his hedgehog roles, but the likely intended answer is **Sonic the Hedgehog** if misheard \u2014 no, wait, clarify: it's **Eeyore** voiced by the singer, but re-reading,",
+        "confidence": -1.421842094684567,
+        "n_tokens": 60,
+        "correct": true
+      },
+      {
+        "id": "5adddccd5542997dc7907069",
+        "question": "Aside from the Apple Remote, what other device can control the program Apple Remote was originally designed to interact with?",
+        "gold": "keyboard function keys",
+        "model_answer": "iPhone (via Remote app)",
+        "confidence": -0.1713309091103087,
+        "n_tokens": 7,
+        "correct": false
+      },
+      {
+        "id": "5ae2070a5542994d89d5b313",
+        "question": "Which performance act has a higher instrument to person ratio, Badly Drawn Boy or Wolf Alice? ",
+        "gold": "Badly Drawn Boy",
+        "model_answer": "Wolf Alice",
+        "confidence": -0.5268503998963177,
+        "n_tokens": 2,
+        "correct": false
+      },
+      {
+        "id": "5ae22b8d554299234fd0440f",
+        "question": "What was the father of Kasper Schmeichel voted to be by the IFFHS in 1992?",
+        "gold": "World's Best Goalkeeper",
+        "model_answer": "World's Best Goalkeeper",
+        "confidence": -1.86045326758e-08,
+        "n_tokens": 5,
+        "correct": true
+      }
+    ]
+  },
+  "summary": {
+    "0.0": {
+      "n": 25,
+      "n_scored": 25,
+      "n_correct": 14,
+      "auroc": 0.4935064935064935,
+      "auroc_ci_low": 0.2564935064935065,
+      "auroc_ci_high": 0.7456140350877193,
+      "auroc_ci_halfwidth": 0.2445602642971064,
+      "mean_conf_correct": 2.2664676193048706e-09,
+      "mean_conf_wrong": 4.462505563010102e-09,
+      "tau80": -7.4505805e-09,
+      "max_abs_logprob": 7.078051600000001e-08,
+      "readable": false
+    },
+    "0.2": {
+      "n": 25,
+      "n_scored": 25,
+      "n_correct": 13,
+      "auroc": 0.6121794871794872,
+      "auroc_ci_low": 0.39035087719298245,
+      "auroc_ci_high": 0.8506493506493507,
+      "auroc_ci_halfwidth": 0.2301492367281841,
+      "mean_conf_correct": -0.04225725316801931,
+      "mean_conf_wrong": -0.03224833627803696,
+      "tau80": -0.03944488979516,
+      "max_abs_logprob": 0.42870066,
+      "readable": false
+    },
+    "0.5": {
+      "n": 25,
+      "n_scored": 25,
+      "n_correct": 14,
+      "auroc": 0.6493506493506493,
+      "auroc_ci_low": 0.4166666666666667,
+      "auroc_ci_high": 0.8653846153846154,
+      "auroc_ci_halfwidth": 0.22435897435897437,
+      "mean_conf_correct": -0.10682091011998768,
+      "mean_conf_wrong": -0.24568875554206973,
+      "tau80": -0.3541021213079451,
+      "max_abs_logprob": 0.69677449,
+      "readable": false
+    },
+    "0.7": {
+      "n": 25,
+      "n_scored": 25,
+      "n_correct": 13,
+      "auroc": 0.5576923076923077,
+      "auroc_ci_low": 0.3246753246753247,
+      "auroc_ci_high": 0.7922077922077922,
+      "auroc_ci_halfwidth": 0.2337662337662338,
+      "mean_conf_correct": -0.3630804416032897,
+      "mean_conf_wrong": -0.3612069130363318,
+      "tau80": -0.6829887,
+      "max_abs_logprob": 1.7279777313735485,
+      "readable": false
+    },
+    "1.0": {
+      "n": 25,
+      "n_scored": 25,
+      "n_correct": 8,
+      "auroc": 0.7720588235294118,
+      "auroc_ci_low": 0.5220588235294118,
+      "auroc_ci_high": 0.956140350877193,
+      "auroc_ci_halfwidth": 0.21704076367389058,
+      "mean_conf_correct": -0.2673549818316891,
+      "mean_conf_wrong": -0.7784345163985377,
+      "tau80": -1.0227154675,
+      "max_abs_logprob": 2.814828803337239,
+      "readable": false
+    }
+  },
+  "derived": {
+    "auroc_range_S": 0.2144,
+    "tau80_drift_S": 0.9833,
+    "temp0_max_abs_logprob": 0.0
+  }
+}

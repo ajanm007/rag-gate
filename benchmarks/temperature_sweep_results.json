@@ -1,0 +1,1221 @@
+{
+  "dry_run": false,
+  "model": "grok-3-mini",
+  "api_base": "https://api.x.ai/v1/chat/completions",
+  "generated_at": "2026-08-22T14:39:15.115710+00:00",
+  "rules_version": "signal_decision.md pre-registered 2026-08-22",
+  "per_question": {
+    "0.0": [
+      {
+        "id": "5a8b57f25542995d1e6f1371",
+        "question": "Were Scott Derrickson and Ed Wood of the same nationality?",
+        "gold": "yes",
+        "model_answer": "Yes",
+        "confidence": -4.453853745562059e-09,
+        "n_tokens": 239,
+        "correct": true
+      },
+      {
+        "id": "5a8c7595554299585d9e36b6",
+        "question": "What government position was held by the woman who portrayed Corliss Archer in the film Kiss and Tell?",
+        "gold": "Chief of Protocol",
+        "model_answer": "U.S. Ambassador to Ghana \n\nThe actress who played Corliss Archer in the 1945 film *Kiss and Tell* is Shirley Temple. After retiring from acting, Temple (later Shirley Temple Black) entered public service and was appointed U.S. Ambassador to Ghana (1974\u20131976",
+        "confidence": -6.563950277209519e-09,
+        "n_tokens": 620,
+        "correct": false
+      },
+      {
+        "id": "5a85ea095542994775f606a8",
+        "question": "What science fantasy young adult series, told in first person, has a set of companion books narrating the stories of enslaved worlds and alien species?",
+        "gold": "Animorphs",
+        "model_answer": "The question describes a YA series blending sci-fi and fantasy elements, narrated in rotating first-person perspectives, whose main plot centers on teens resisting parasitic alien invaders (the Yeerks) who enslave entire species and planets.  \n\nA dedicated set of companion \u201cChronicles\u201d volumes (Andalite Chronicles",
+        "confidence": -4.3444103353521244e-09,
+        "n_tokens": 712,
+        "correct": false
+      },
+      {
+        "id": "5adbf0a255429947ff17385a",
+        "question": "Are the Laleli Mosque and Esma Sultan Mansion located in the same neighborhood?",
+        "gold": "no",
+        "model_answer": "No \n\nThe Laleli Mosque is in the Laleli quarter of Fatih, Istanbul; the best-known Esma Sultan Mansion (Yal\u0131s\u0131) is in Ortak\u00f6y, Be\u015fikta\u015f\u2014distinct neighborhoods.",
+        "confidence": -2.892687387162135e-09,
+        "n_tokens": 371,
+        "correct": true
+      },
+      {
+        "id": "5a8e3ea95542995a26add48d",
+        "question": "The director of the romantic comedy \"Big Stone Gap\" is based in what New York city?",
+        "gold": "Greenwich Village, New York City",
+        "model_answer": "New York City \n\nThe film *Big Stone Gap* (2014) was written and directed by Adriana Trigiani, who has long been based in New York City (specifically Greenwich Village). The phrasing \u201cNew York city\u201d therefore refers to New York City itself.",
+        "confidence": -3.9795400919733956e-09,
+        "n_tokens": 532,
+        "correct": false
+      },
+      {
+        "id": "5abd94525542992ac4f382d2",
+        "question": "2014 S/S is the debut album of a South Korean boy group that was formed by who?",
+        "gold": "YG Entertainment",
+        "model_answer": "YG Entertainment \n\nThe album \"2014 S/S\" is the debut release of the K-pop group WINNER. WINNER was assembled by the agency YG Entertainment (via the 2013 survival program WIN: Who Is Next) and made its official debut under that label in August 2014",
+        "confidence": -5.817794496308041e-09,
+        "n_tokens": 603,
+        "correct": true
+      },
+      {
+        "id": "5a85b2d95542997b5ce40028",
+        "question": "Who was known by his stage name Aladin and helped organizations improve their performance as a consultant?",
+        "gold": "Eenasul Fateh",
+        "model_answer": "unknown",
+        "confidence": -7.141204975758671e-09,
+        "n_tokens": 2493,
+        "correct": false
+      },
+      {
+        "id": "5a87ab905542996e4f3088c1",
+        "question": "The arena where the Lewiston Maineiacs played their home games can seat how many people?",
+        "gold": "3,677 seated",
+        "model_answer": "3,677 \n\nThe Lewiston Maineiacs (QMJHL) played home games at the Androscoggin Bank Colis\u00e9e in Lewiston, Maine. Official arena records list its hockey seating capacity as exactly 3,677. This figure is the standard cited in team and league references",
+        "confidence": -5.316918207200144e-09,
+        "n_tokens": 348,
+        "correct": false
+      },
+      {
+        "id": "5a7bbb64554299042af8f7cc",
+        "question": "Who is older, Annie Morton or Terry Richardson?",
+        "gold": "Terry Richardson",
+        "model_answer": "Terry Richardson \n\nThe answer is based on verified birth dates: Terry Richardson (August 14, 1965) and Annie Morton (October 28, 1970). Subtracting the years gives a 5-year difference, confirming Richardson is older. No other biographical sources contradict these dates.",
+        "confidence": -5.541152513561676e-09,
+        "n_tokens": 377,
+        "correct": true
+      },
+      {
+        "id": "5a8db19d5542994ba4e3dd00",
+        "question": "Are Local H and For Against both from the United States?",
+        "gold": "yes",
+        "model_answer": "Yes",
+        "confidence": -3.953444628551138e-09,
+        "n_tokens": 216,
+        "correct": true
+      },
+      {
+        "id": "5a7166395542994082a3e814",
+        "question": "What is the name of the fight song of the university whose main campus is in Lawrence, Kansas and whose branch campuses are in the Kansas City metropolitan area?",
+        "gold": "Kansas Song",
+        "model_answer": "I'm a Jayhawk \n\nThe university is the University of Kansas (KU), whose flagship campus is in Lawrence and whose medical/Edwards campuses lie in the Kansas City metro. Its official fight song, composed in 1912 by George \u201cDumpy\u201d Bowles, is titled \u201cI\u2019m a Jay",
+        "confidence": -2.9631208128501605e-09,
+        "n_tokens": 411,
+        "correct": false
+      },
+      {
+        "id": "5a877e5d5542993e715abf7d",
+        "question": "What screenwriter with credits for \"Evolution\" co-wrote a film starring Nicolas Cage and T\u00e9a Leoni?",
+        "gold": "David Weissman",
+        "model_answer": "David Weissman (or Diamond) \n\nThe film with Cage and Leoni is The Family Man (2000). Its screenwriters are the team of David Diamond and David Weissman, who also share screenplay credit on Evolution (2001). Either name satisfies the query.",
+        "confidence": -5.636962321731024e-09,
+        "n_tokens": 896,
+        "correct": true
+      },
+      {
+        "id": "5ab3b0bf5542992ade7c6e39",
+        "question": "What year did Guns N Roses perform a promo for a movie starring Arnold Schwarzenegger as a former New York Police detective?",
+        "gold": "1999",
+        "model_answer": "1999 \n\nThe movie matching the description is *End of Days* (1999), in which Schwarzenegger plays Jericho Cane, an alcoholic former NYPD detective. Guns N\u2019 Roses recorded the track \u201cOh My God\u201d for its soundtrack and performed promotional appearances tied to the film\u2019s marketing campaign that",
+        "confidence": -6.6939944243735e-09,
+        "n_tokens": 1181,
+        "correct": true
+      },
+      {
+        "id": "5ab56e32554299637185c594",
+        "question": "Are Random House Tower and 888 7th Avenue both used for real estate?",
+        "gold": "no",
+        "model_answer": "Yes",
+        "confidence": -4.52571441965139e-09,
+        "n_tokens": 413,
+        "correct": false
+      },
+      {
+        "id": "5ab6d09255429954757d337d",
+        "question": "The football manager who recruited David Beckham managed Manchester United during what timeframe?",
+        "gold": "from 1986 to 2013",
+        "model_answer": "1986-2013",
+        "confidence": -2.0330060298658757e-09,
+        "n_tokens": 289,
+        "correct": false
+      },
+      {
+        "id": "5a75e05c55429976ec32bc5f",
+        "question": "Brown State Fishing Lake is in a country that has a population of how many inhabitants ?",
+        "gold": "9,984",
+        "model_answer": "331 million \n\nThe lake is located in Kansas, USA. The current population of the United States is approximately 331 million.",
+        "confidence": -6.364179510271372e-09,
+        "n_tokens": 541,
+        "correct": false
+      },
+      {
+        "id": "5ab3e45655429976abd1bcd4",
+        "question": "The Vermont Catamounts men's soccer team currently competes in a conference that was formerly known as what from 1988 to 1996?",
+        "gold": "the North Atlantic Conference",
+        "model_answer": "North Atlantic Conference \n\nThe Vermont Catamounts men's soccer program is a member of the America East Conference. That league operated under the name North Atlantic Conference (NAC) from 1988 until its rebranding in 1996.",
+        "confidence": -2.2837527247773277e-09,
+        "n_tokens": 435,
+        "correct": false
+      },
+      {
+        "id": "5ab29c24554299449642c932",
+        "question": "Are Giuseppe Verdi and Ambroise Thomas both Opera composers ?",
+        "gold": "yes",
+        "model_answer": "Yes",
+        "confidence": -1.1160692796337196e-09,
+        "n_tokens": 150,
+        "correct": true
+      },
+      {
+        "id": "5ae0d4c9554299603e418468",
+        "question": "Roger O. Egeberg was Assistant Secretary for Health and Scientific Affairs during the administration of a president that served during what years?",
+        "gold": "1969 until 1974",
+        "model_answer": "1969-1974 \n\nThe query identifies Roger O. Egeberg\u2019s federal post (Assistant Secretary for Health and Scientific Affairs, 1969\u20131971). Historical records show this appointment occurred under President Richard Nixon, whose term ran from 20 January 1969 to 9 August",
+        "confidence": -2.4613532678722833e-09,
+        "n_tokens": 276,
+        "correct": false
+      },
+      {
+        "id": "5a8133725542995ce29dcbdb",
+        "question": "Which writer was from England, Henry Roth or Robert Erskine Childers?",
+        "gold": "Robert Erskine Childers DSC",
+        "model_answer": "Robert Erskine Childers",
+        "confidence": -6.828164754146254e-09,
+        "n_tokens": 301,
+        "correct": true
+      },
+      {
+        "id": "5ae7a8175542993210983ed8",
+        "question": "Which other Mexican Formula One race car driver has held the podium besides the Force India driver born in 1990?",
+        "gold": "Pedro Rodr\u00edguez",
+        "model_answer": "Pedro Rodr\u00edguez \n\nThe Force India driver born in 1990 is Sergio P\u00e9rez. The only other Mexican F1 driver with podium finishes (in fact multiple wins) is Pedro Rodr\u00edguez.",
+        "confidence": -8.249769656267057e-09,
+        "n_tokens": 501,
+        "correct": true
+      },
+      {
+        "id": "5ae6050f55429929b0807a5e",
+        "question": "This singer of A Rather Blustery Day also voiced what hedgehog?",
+        "gold": "Sonic",
+        "model_answer": "Sonic \n\nThe query refers to a Disney Winnie the Pooh recording of the song \u201cA Rather Blustery Day,\u201d performed by the character\u2019s voice actor. That same performer (in later dubs and related projects) supplied the English voice for the video-game character Sonic the Hedgehog, yielding the",
+        "confidence": -5.568096562766876e-09,
+        "n_tokens": 1383,
+        "correct": true
+      },
+      {
+        "id": "5adddccd5542997dc7907069",
+        "question": "Aside from the Apple Remote, what other device can control the program Apple Remote was originally designed to interact with?",
+        "gold": "keyboard function keys",
+        "model_answer": "The Apple Remote was introduced to control Front Row (the Mac media-center app). Front Row could also be controlled via the official Remote app on iPhone/iPod touch.\n\n**iPhone (Remote app)**",
+        "confidence": -3.777451470488877e-09,
+        "n_tokens": 622,
+        "correct": false
+      },
+      {
+        "id": "5ae2070a5542994d89d5b313",
+        "question": "Which performance act has a higher instrument to person ratio, Badly Drawn Boy or Wolf Alice? ",
+        "gold": "Badly Drawn Boy",
+        "model_answer": "Badly Drawn Boy \n\nThe ratio is instruments divided by performers in a typical live setup. Badly Drawn Boy is a solo act whose stage is arranged with multiple instruments (guitar, keyboards, etc.) played by one person, producing a high ratio. Wolf Alice is a four-piece band",
+        "confidence": -6.270064359742864e-09,
+        "n_tokens": 535,
+        "correct": true
+      },
+      {
+        "id": "5ae22b8d554299234fd0440f",
+        "question": "What was the father of Kasper Schmeichel voted to be by the IFFHS in 1992?",
+        "gold": "World's Best Goalkeeper",
+        "model_answer": "World's Best Goalkeeper \n\nThe query refers to Peter Schmeichel (father of Kasper Schmeichel). In 1992 the IFFHS awarded him its annual \u201cWorld\u2019s Best Goalkeeper\u201d title on the basis of statistical performance across all club and international matches.",
+        "confidence": -7.044578195178726e-09,
+        "n_tokens": 278,
+        "correct": true
+      }
+    ],
+    "0.2": [
+      {
+        "id": "5a8b57f25542995d1e6f1371",
+        "question": "Were Scott Derrickson and Ed Wood of the same nationality?",
+        "gold": "yes",
+        "model_answer": "Yes \n\n(The answer is based on both being U.S.-born citizens.)",
+        "confidence": -0.03902771176613481,
+        "n_tokens": 272,
+        "correct": true
+      },
+      {
+        "id": "5a8c7595554299585d9e36b6",
+        "question": "What government position was held by the woman who portrayed Corliss Archer in the film Kiss and Tell?",
+        "gold": "Chief of Protocol",
+        "model_answer": "ambassador (to Ghana/Czechoslovakia) \n\nThe film *Kiss and Tell* (1945) cast Shirley Temple as Corliss Archer. Temple later served in several U.S. diplomatic posts, most notably as ambassador to Ghana (1974\u201376) and to Czechoslovakia (1989",
+        "confidence": -0.02424410285247494,
+        "n_tokens": 593,
+        "correct": false
+      },
+      {
+        "id": "5a85ea095542994775f606a8",
+        "question": "What science fantasy young adult series, told in first person, has a set of companion books narrating the stories of enslaved worlds and alien species?",
+        "gold": "Animorphs",
+        "model_answer": "The series in question is Animorphs (by K.A. Applegate). It matches all criteria: YA science-fantasy with alien invasion and morphing technology, alternating first-person narration, and the Chronicles side books (e.g., Hork-Bajir, Andalite, Visser) that recount",
+        "confidence": -0.0379070200449651,
+        "n_tokens": 633,
+        "correct": true
+      },
+      {
+        "id": "5adbf0a255429947ff17385a",
+        "question": "Are the Laleli Mosque and Esma Sultan Mansion located in the same neighborhood?",
+        "gold": "no",
+        "model_answer": "No \n\nThe Laleli Mosque is in the Laleli neighborhood (Fatih district, Istanbul). The best-known Esma Sultan Mansion (a waterfront yal\u0131 used for events) is in the Ortak\u00f6y neighborhood (Be\u015fikta\u015f district), several kilometers away. These are distinct neighborhoods, so the answer is",
+        "confidence": -0.044559986629359845,
+        "n_tokens": 414,
+        "correct": true
+      },
+      {
+        "id": "5a8e3ea95542995a26add48d",
+        "question": "The director of the romantic comedy \"Big Stone Gap\" is based in what New York city?",
+        "gold": "Greenwich Village, New York City",
+        "model_answer": "New York City \n\nThe film *Big Stone Gap* (2014) was written and directed by Adriana Trigiani, who maintains her primary residence in New York City (specifically Greenwich Village). The answer is therefore the city name itself.",
+        "confidence": -0.040117975837148115,
+        "n_tokens": 535,
+        "correct": false
+      },
+      {
+        "id": "5abd94525542992ac4f382d2",
+        "question": "2014 S/S is the debut album of a South Korean boy group that was formed by who?",
+        "gold": "YG Entertainment",
+        "model_answer": "YG Entertainment \n\nThe album \"2014 S/S\" is the debut release of the K-pop boy group WINNER. WINNER was assembled in 2013 by YG Entertainment through its survival program \"WIN: Who Is Next,\" making YG Entertainment the entity that formed the group.",
+        "confidence": -0.03929026866415702,
+        "n_tokens": 587,
+        "correct": true
+      },
+      {
+        "id": "5a85b2d95542997b5ce40028",
+        "question": "Who was known by his stage name Aladin and helped organizations improve their performance as a consultant?",
+        "gold": "Eenasul Fateh",
+        "model_answer": "Max Auzinger (or similar) \n\n(The match is imperfect based on available details.)",
+        "confidence": -0.0701935754443921,
+        "n_tokens": 2006,
+        "correct": false
+      },
+      {
+        "id": "5a87ab905542996e4f3088c1",
+        "question": "The arena where the Lewiston Maineiacs played their home games can seat how many people?",
+        "gold": "3,677 seated",
+        "model_answer": "3,677 \n\nThe Lewiston Maineiacs (QMJHL) played home games at the Androscoggin Bank Colis\u00e9e in Lewiston, Maine. Official arena records list its hockey seating capacity as 3,677.",
+        "confidence": -0.03232420728878639,
+        "n_tokens": 327,
+        "correct": false
+      },
+      {
+        "id": "5a7bbb64554299042af8f7cc",
+        "question": "Who is older, Annie Morton or Terry Richardson?",
+        "gold": "Terry Richardson",
+        "model_answer": "Terry Richardson",
+        "confidence": -0.03812687441254558,
+        "n_tokens": 369,
+        "correct": true
+      },
+      {
+        "id": "5a8db19d5542994ba4e3dd00",
+        "question": "Are Local H and For Against both from the United States?",
+        "gold": "yes",
+        "model_answer": "Yes",
+        "confidence": -0.02709875488870974,
+        "n_tokens": 225,
+        "correct": true
+      },
+      {
+        "id": "5a7166395542994082a3e814",
+        "question": "What is the name of the fight song of the university whose main campus is in Lawrence, Kansas and whose branch campuses are in the Kansas City metropolitan area?",
+        "gold": "Kansas Song",
+        "model_answer": "I'm a Jayhawk \n\nThe university is the University of Kansas (KU), whose flagship campus is in Lawrence and which maintains medical and other campuses in the Kansas City area. Its official fight song, composed in 1912 by George \u201cDixie\u201d Lee and adopted by the university, is titled",
+        "confidence": -0.007562665966030805,
+        "n_tokens": 331,
+        "correct": false
+      },
+      {
+        "id": "5a877e5d5542993e715abf7d",
+        "question": "What screenwriter with credits for \"Evolution\" co-wrote a film starring Nicolas Cage and T\u00e9a Leoni?",
+        "gold": "David Weissman",
+        "model_answer": "David Diamond (or Weissman) \n\nThe 2001 sci-fi comedy *Evolution* was written by the team of David Diamond, David Weissman and Don Jakoby. The same Diamond\u2013Weissman duo also wrote the 2000 romantic drama *The Family Man*, which stars Nicolas Cage",
+        "confidence": -0.03420073876226308,
+        "n_tokens": 625,
+        "correct": true
+      },
+      {
+        "id": "5ab3b0bf5542992ade7c6e39",
+        "question": "What year did Guns N Roses perform a promo for a movie starring Arnold Schwarzenegger as a former New York Police detective?",
+        "gold": "1999",
+        "model_answer": "1999 \n\nThe movie matching the description is *End of Days* (1999), in which Schwarzenegger plays ex-NYPD detective Jericho Cane. Guns N\u2019 Roses contributed the track \u201cOh My God\u201d to its soundtrack and performed promotional appearances tied to the film\u2019s release that same year.",
+        "confidence": -0.04399816220071713,
+        "n_tokens": 587,
+        "correct": true
+      },
+      {
+        "id": "5ab56e32554299637185c594",
+        "question": "Are Random House Tower and 888 7th Avenue both used for real estate?",
+        "gold": "no",
+        "model_answer": "Yes \n\nThe buildings in question are both Manhattan office towers (hence real estate assets).",
+        "confidence": -0.056640908891413634,
+        "n_tokens": 464,
+        "correct": false
+      },
+      {
+        "id": "5ab6d09255429954757d337d",
+        "question": "The football manager who recruited David Beckham managed Manchester United during what timeframe?",
+        "gold": "from 1986 to 2013",
+        "model_answer": "1986-2013 \n\nThe manager in question is Sir Alex Ferguson, who signed a young David Beckham to Manchester United's youth academy in 1991 (and later promoted him to the senior squad). Ferguson held the Manchester United managerial post continuously from November 1986 until his retirement in May",
+        "confidence": -0.030844117500991,
+        "n_tokens": 426,
+        "correct": false
+      },
+      {
+        "id": "5a75e05c55429976ec32bc5f",
+        "question": "Brown State Fishing Lake is in a country that has a population of how many inhabitants ?",
+        "gold": "9,984",
+        "model_answer": "331 million \n\nThe lake is located in Kansas, United States; the U.S. population figure is taken from the 2020 census total.",
+        "confidence": -0.062353398757175854,
+        "n_tokens": 674,
+        "correct": false
+      },
+      {
+        "id": "5ab3e45655429976abd1bcd4",
+        "question": "The Vermont Catamounts men's soccer team currently competes in a conference that was formerly known as what from 1988 to 1996?",
+        "gold": "the North Atlantic Conference",
+        "model_answer": "North Atlantic Conference \n\nThe University of Vermont's athletic teams (including men's soccer) are members of the America East Conference. This league was founded in 1979 as the ECAC North, then renamed the North Atlantic Conference in 1988 before adopting its current name in 1996. Thus the",
+        "confidence": -0.024081175511911173,
+        "n_tokens": 436,
+        "correct": true
+      },
+      {
+        "id": "5ab29c24554299449642c932",
+        "question": "Are Giuseppe Verdi and Ambroise Thomas both Opera composers ?",
+        "gold": "yes",
+        "model_answer": "Yes",
+        "confidence": -0.04476424447785507,
+        "n_tokens": 176,
+        "correct": true
+      },
+      {
+        "id": "5ae0d4c9554299603e418468",
+        "question": "Roger O. Egeberg was Assistant Secretary for Health and Scientific Affairs during the administration of a president that served during what years?",
+        "gold": "1969 until 1974",
+        "model_answer": "1969-1974 \n\nThe query identifies Roger O. Egeberg\u2019s federal post (Assistant Secretary for Health and Scientific Affairs), which he held under President Richard Nixon; Nixon\u2019s term of office therefore supplies the requested years.",
+        "confidence": -0.014297689375957087,
+        "n_tokens": 272,
+        "correct": false
+      },
+      {
+        "id": "5a8133725542995ce29dcbdb",
+        "question": "Which writer was from England, Henry Roth or Robert Erskine Childers?",
+        "gold": "Robert Erskine Childers DSC",
+        "model_answer": "Robert Erskine Childers",
+        "confidence": -0.034988900199213774,
+        "n_tokens": 324,
+        "correct": true
+      },
+      {
+        "id": "5ae7a8175542993210983ed8",
+        "question": "Which other Mexican Formula One race car driver has held the podium besides the Force India driver born in 1990?",
+        "gold": "Pedro Rodr\u00edguez",
+        "model_answer": "Pedro Rodr\u00edguez \n\nThe Force India driver born in 1990 is Sergio P\u00e9rez. Among other Mexican F1 drivers, only Pedro Rodr\u00edguez (and to a lesser extent his brother Ricardo) also recorded podium finishes.",
+        "confidence": -0.03419145500546099,
+        "n_tokens": 690,
+        "correct": true
+      },
+      {
+        "id": "5ae6050f55429929b0807a5e",
+        "question": "This singer of A Rather Blustery Day also voiced what hedgehog?",
+        "gold": "Sonic",
+        "model_answer": "Sonic \n\nThe song \"A Rather Blustery Day\" originates from Disney's 1977 feature *The Many Adventures of Winnie the Pooh*, performed by the character Pooh Bear. The voice actor most closely associated with that recording and the classic Pooh portrayal is Sterling Holloway. Holloway's extensive",
+        "confidence": -0.04958996295064367,
+        "n_tokens": 1439,
+        "correct": true
+      },
+      {
+        "id": "5adddccd5542997dc7907069",
+        "question": "Aside from the Apple Remote, what other device can control the program Apple Remote was originally designed to interact with?",
+        "gold": "keyboard function keys",
+        "model_answer": "The Apple Remote was introduced to control Front Row (Apple's media-center interface on macOS). Front Row could also be driven by the official iOS Remote app running on an iPhone or iPod touch.\n\nFinal answer: iPhone (Remote app)",
+        "confidence": -0.0393313024250264,
+        "n_tokens": 1197,
+        "correct": false
+      },
+      {
+        "id": "5ae2070a5542994d89d5b313",
+        "question": "Which performance act has a higher instrument to person ratio, Badly Drawn Boy or Wolf Alice? ",
+        "gold": "Badly Drawn Boy",
+        "model_answer": "Badly Drawn Boy \n\nThe act is a solo performer (Damon Gough) who routinely deploys a multi-instrument live rig (acoustic/electric guitars, keyboards, harmonica, glockenspiel, etc.). Wolf Alice is a four-piece band whose members each handle one primary instrument",
+        "confidence": -0.04006322236411298,
+        "n_tokens": 517,
+        "correct": true
+      },
+      {
+        "id": "5ae22b8d554299234fd0440f",
+        "question": "What was the father of Kasper Schmeichel voted to be by the IFFHS in 1992?",
+        "gold": "World's Best Goalkeeper",
+        "model_answer": "World's best goalkeeper \n\nThe query concerns Peter Schmeichel (father of Kasper). In 1992 the IFFHS ranked him No. 1 on its annual list of the world\u2019s best goalkeepers, an accolade tied to his performances for Manchester United and Denmark\u2019s Euro",
+        "confidence": -0.010367040097214366,
+        "n_tokens": 333,
+        "correct": true
+      }
+    ],
+    "0.5": [
+      {
+        "id": "5a8b57f25542995d1e6f1371",
+        "question": "Were Scott Derrickson and Ed Wood of the same nationality?",
+        "gold": "yes",
+        "model_answer": "Yes",
+        "confidence": -0.08474201394360556,
+        "n_tokens": 277,
+        "correct": true
+      },
+      {
+        "id": "5a8c7595554299585d9e36b6",
+        "question": "What government position was held by the woman who portrayed Corliss Archer in the film Kiss and Tell?",
+        "gold": "Chief of Protocol",
+        "model_answer": "Ambassador to Ghana \n\nThe film *Kiss and Tell* (1945) starred Shirley Temple as Corliss Archer. Temple later entered government service, serving as U.S. Ambassador to Ghana (1974\u20131976) among other diplomatic posts.",
+        "confidence": -0.09062388392072376,
+        "n_tokens": 610,
+        "correct": false
+      },
+      {
+        "id": "5a85ea095542994775f606a8",
+        "question": "What science fantasy young adult series, told in first person, has a set of companion books narrating the stories of enslaved worlds and alien species?",
+        "gold": "Animorphs",
+        "model_answer": "The series in question is Animorphs (by K.A. Applegate). It is a first-person YA science-fantasy saga whose main arc is supplemented by a set of stand-alone \u201cChronicles\u201d volumes that recount the back-stories of the alien races and the worlds they have conquered or enslaved",
+        "confidence": -0.10626104200989765,
+        "n_tokens": 729,
+        "correct": true
+      },
+      {
+        "id": "5adbf0a255429947ff17385a",
+        "question": "Are the Laleli Mosque and Esma Sultan Mansion located in the same neighborhood?",
+        "gold": "no",
+        "model_answer": "No \n\nThe Laleli Mosque is in the Laleli quarter of Fatih, Istanbul. The Esma Sultan Mansion (the well-known historic one used for events) is in Ortak\u00f6y, Be\u015fikta\u015f\u2014distinct neighborhoods several kilometers apart.",
+        "confidence": -0.07780138360217408,
+        "n_tokens": 357,
+        "correct": true
+      },
+      {
+        "id": "5a8e3ea95542995a26add48d",
+        "question": "The director of the romantic comedy \"Big Stone Gap\" is based in what New York city?",
+        "gold": "Greenwich Village, New York City",
+        "model_answer": "New York City \n\nThe film \"Big Stone Gap\" (2014) was written and directed by Adriana Trigiani. Trigiani has long been based in New York City (specifically Greenwich Village, Manhattan). The phrasing of the query therefore points directly to that city.",
+        "confidence": -0.07448207883355704,
+        "n_tokens": 528,
+        "correct": false
+      },
+      {
+        "id": "5abd94525542992ac4f382d2",
+        "question": "2014 S/S is the debut album of a South Korean boy group that was formed by who?",
+        "gold": "YG Entertainment",
+        "model_answer": "Yang Hyun-suk (YG) \n\nThe album title directly identifies the group as WINNER (YG Entertainment's first boy band, assembled via the 2013 reality series WIN: Who Is Next). Its founder/CEO Yang Hyun-suk is the individual credited with forming the group.",
+        "confidence": -0.07097450640509223,
+        "n_tokens": 623,
+        "correct": true
+      },
+      {
+        "id": "5a85b2d95542997b5ce40028",
+        "question": "Who was known by his stage name Aladin and helped organizations improve their performance as a consultant?",
+        "gold": "Eenasul Fateh",
+        "model_answer": "Adolf Rotbart \n\nThe query points to the Austrian magician (1892\u20131958) whose stage persona was \"Aladin.\" After retiring from performance, he worked as a management consultant focused on organizational efficiency and performance improvement.",
+        "confidence": -0.20445170479795727,
+        "n_tokens": 2139,
+        "correct": false
+      },
+      {
+        "id": "5a87ab905542996e4f3088c1",
+        "question": "The arena where the Lewiston Maineiacs played their home games can seat how many people?",
+        "gold": "3,677 seated",
+        "model_answer": "3,677 \n\nThe Lewiston Maineiacs (QMJHL) played home games at the Androscoggin Bank Colis\u00e9e (Lewiston, Maine). Its official hockey seating capacity is listed as 3,677.",
+        "confidence": -0.06630907842976419,
+        "n_tokens": 284,
+        "correct": false
+      },
+      {
+        "id": "5a7bbb64554299042af8f7cc",
+        "question": "Who is older, Annie Morton or Terry Richardson?",
+        "gold": "Terry Richardson",
+        "model_answer": "Terry Richardson",
+        "confidence": -0.0885815230446997,
+        "n_tokens": 329,
+        "correct": true
+      },
+      {
+        "id": "5a8db19d5542994ba4e3dd00",
+        "question": "Are Local H and For Against both from the United States?",
+        "gold": "yes",
+        "model_answer": "Yes",
+        "confidence": -0.08334168900925881,
+        "n_tokens": 197,
+        "correct": true
+      },
+      {
+        "id": "5a7166395542994082a3e814",
+        "question": "What is the name of the fight song of the university whose main campus is in Lawrence, Kansas and whose branch campuses are in the Kansas City metropolitan area?",
+        "gold": "Kansas Song",
+        "model_answer": "I'm a Jayhawk \n\nThe university described is the University of Kansas (KU), whose flagship campus is in Lawrence and whose medical/Edwards campuses lie in the Kansas City metro. KU\u2019s official fight song, adopted in 1912 and still performed at athletic events, is titled \u201cI\u2019m a Jay",
+        "confidence": -0.056071421356743485,
+        "n_tokens": 355,
+        "correct": false
+      },
+      {
+        "id": "5a877e5d5542993e715abf7d",
+        "question": "What screenwriter with credits for \"Evolution\" co-wrote a film starring Nicolas Cage and T\u00e9a Leoni?",
+        "gold": "David Weissman",
+        "model_answer": "David Diamond (or Weissman) \n\nThe 2001 film *Evolution* was written by David Diamond and David Weissman (from a story by Don Jakoby). The same duo co-wrote the 2000 Nicolas Cage/T\u00e9a Leoni vehicle *The Family Man*, satisfying both halves",
+        "confidence": -0.08479351088880518,
+        "n_tokens": 823,
+        "correct": true
+      },
+      {
+        "id": "5ab3b0bf5542992ade7c6e39",
+        "question": "What year did Guns N Roses perform a promo for a movie starring Arnold Schwarzenegger as a former New York Police detective?",
+        "gold": "1999",
+        "model_answer": "1999 \n\nThe movie in question is *End of Days* (1999), in which Schwarzenegger plays Jericho Cane, a retired NYPD detective. Guns N\u2019 Roses recorded the track \u201cOh My God\u201d for its soundtrack and performed a promotional appearance tied to the film\u2019s release that same year",
+        "confidence": -0.10764576326562615,
+        "n_tokens": 914,
+        "correct": true
+      },
+      {
+        "id": "5ab56e32554299637185c594",
+        "question": "Are Random House Tower and 888 7th Avenue both used for real estate?",
+        "gold": "no",
+        "model_answer": "Yes",
+        "confidence": -0.11025443412392284,
+        "n_tokens": 524,
+        "correct": false
+      },
+      {
+        "id": "5ab6d09255429954757d337d",
+        "question": "The football manager who recruited David Beckham managed Manchester United during what timeframe?",
+        "gold": "from 1986 to 2013",
+        "model_answer": "1986\u20132013 \n\nThe manager in question is Sir Alex Ferguson, who signed a young David Beckham (initially as a trainee in 1991). Ferguson\u2019s tenure at Manchester United ran continuously from his appointment on 6 November 1986 until his retirement on 19 May 2013",
+        "confidence": -0.07151148752439775,
+        "n_tokens": 343,
+        "correct": false
+      },
+      {
+        "id": "5a75e05c55429976ec32bc5f",
+        "question": "Brown State Fishing Lake is in a country that has a population of how many inhabitants ?",
+        "gold": "9,984",
+        "model_answer": "333 million \n\nThe lake is located in Kansas, USA. The current population of the United States is approximately 333 million.",
+        "confidence": -0.10177063803338784,
+        "n_tokens": 621,
+        "correct": false
+      },
+      {
+        "id": "5ab3e45655429976abd1bcd4",
+        "question": "The Vermont Catamounts men's soccer team currently competes in a conference that was formerly known as what from 1988 to 1996?",
+        "gold": "the North Atlantic Conference",
+        "model_answer": "North Atlantic Conference \n\nThe Vermont Catamounts men's soccer program is a member of the America East Conference. That league was founded in 1979 as the ECAC North, renamed the North Atlantic Conference in 1988, and adopted its present name in 1996. The 1988\u2013",
+        "confidence": -0.08734986652254494,
+        "n_tokens": 529,
+        "correct": true
+      },
+      {
+        "id": "5ab29c24554299449642c932",
+        "question": "Are Giuseppe Verdi and Ambroise Thomas both Opera composers ?",
+        "gold": "yes",
+        "model_answer": "Yes",
+        "confidence": -0.057382311914757345,
+        "n_tokens": 225,
+        "correct": true
+      },
+      {
+        "id": "5ae0d4c9554299603e418468",
+        "question": "Roger O. Egeberg was Assistant Secretary for Health and Scientific Affairs during the administration of a president that served during what years?",
+        "gold": "1969 until 1974",
+        "model_answer": "1969-1974 \n\nThe query identifies Roger O. Egeberg\u2019s federal post (Assistant Secretary for Health and Scientific Affairs, HEW). Historical records show that President Richard Nixon appointed him to that office in 1969; Nixon\u2019s term ran from January 1969 to August 197",
+        "confidence": -0.06050158622672745,
+        "n_tokens": 352,
+        "correct": false
+      },
+      {
+        "id": "5a8133725542995ce29dcbdb",
+        "question": "Which writer was from England, Henry Roth or Robert Erskine Childers?",
+        "gold": "Robert Erskine Childers DSC",
+        "model_answer": "Robert Erskine Childers",
+        "confidence": -0.06956508669200007,
+        "n_tokens": 329,
+        "correct": true
+      },
+      {
+        "id": "5ae7a8175542993210983ed8",
+        "question": "Which other Mexican Formula One race car driver has held the podium besides the Force India driver born in 1990?",
+        "gold": "Pedro Rodr\u00edguez",
+        "model_answer": "Pedro Rodr\u00edguez \n\nThe Force India driver born in 1990 is Sergio P\u00e9rez. The only other Mexican F1 driver with podium finishes is Pedro Rodr\u00edguez (multiple podiums, including two wins, in the late 1960s/early 1970s).",
+        "confidence": -0.09371989441083937,
+        "n_tokens": 652,
+        "correct": true
+      },
+      {
+        "id": "5ae6050f55429929b0807a5e",
+        "question": "This singer of A Rather Blustery Day also voiced what hedgehog?",
+        "gold": "Sonic",
+        "model_answer": "Sonic \n\nThe query references the Disney Winnie the Pooh track \u201cA Rather Blustery Day,\u201d performed by Jim Cummings in his role as Pooh. Cummings is also widely known for providing the voice of Sonic the Hedgehog in multiple animated projects, making \u201cSonic\u201d the concise answer that satisfies both",
+        "confidence": -0.11998167091724014,
+        "n_tokens": 1239,
+        "correct": true
+      },
+      {
+        "id": "5adddccd5542997dc7907069",
+        "question": "Aside from the Apple Remote, what other device can control the program Apple Remote was originally designed to interact with?",
+        "gold": "keyboard function keys",
+        "model_answer": "The Apple Remote was introduced to control Front Row (Apple's discontinued Mac media-center software). The iOS Remote app (on iPhone/iPod touch) also controls Front Row.\n\nFinal answer: iPhone (Remote app)",
+        "confidence": -0.0911987529189532,
+        "n_tokens": 732,
+        "correct": false
+      },
+      {
+        "id": "5ae2070a5542994d89d5b313",
+        "question": "Which performance act has a higher instrument to person ratio, Badly Drawn Boy or Wolf Alice? ",
+        "gold": "Badly Drawn Boy",
+        "model_answer": "Badly Drawn Boy \n\nThe act consists of one multi-instrumentalist (Damon Gough) versus Wolf Alice\u2019s four-piece band configuration with a conventional 1:1 instrument-to-player ratio.",
+        "confidence": -0.10673697291684897,
+        "n_tokens": 706,
+        "correct": true
+      },
+      {
+        "id": "5ae22b8d554299234fd0440f",
+        "question": "What was the father of Kasper Schmeichel voted to be by the IFFHS in 1992?",
+        "gold": "World's Best Goalkeeper",
+        "model_answer": "World's best goalkeeper \n\nThe query concerns Kasper Schmeichel\u2019s father, Peter Schmeichel. In 1992 the IFFHS (International Federation of Football History & Statistics) conducted its annual ranking of goalkeepers and placed Peter Schmeichel first, thereby naming him the world",
+        "confidence": -0.03025977161706695,
+        "n_tokens": 293,
+        "correct": true
+      }
+    ],
+    "0.7": [
+      {
+        "id": "5a8b57f25542995d1e6f1371",
+        "question": "Were Scott Derrickson and Ed Wood of the same nationality?",
+        "gold": "yes",
+        "model_answer": "Yes\n\n**Explanation**  \nScott Derrickson was born in Denver, Colorado, USA.  \nEd Wood (Edward D. Wood Jr.) was born in Poughkeepsie, New York, USA.  \nBoth therefore share U.S. nationality, so the answer is simply \u201cYes.\u201d",
+        "confidence": -0.10922968540476458,
+        "n_tokens": 334,
+        "correct": true
+      },
+      {
+        "id": "5a8c7595554299585d9e36b6",
+        "question": "What government position was held by the woman who portrayed Corliss Archer in the film Kiss and Tell?",
+        "gold": "Chief of Protocol",
+        "model_answer": "ambassador (to Ghana/Czechoslovakia) \n\nThe film *Kiss and Tell* (1945) starred Shirley Temple as Corliss Archer. After her acting career, Temple (later Shirley Temple Black) held several U.S. diplomatic posts, most prominently as ambassador to Ghana (1974",
+        "confidence": -0.10004905393552628,
+        "n_tokens": 608,
+        "correct": false
+      },
+      {
+        "id": "5a85ea095542994775f606a8",
+        "question": "What science fantasy young adult series, told in first person, has a set of companion books narrating the stories of enslaved worlds and alien species?",
+        "gold": "Animorphs",
+        "model_answer": "The question describes the Animorphs series (by K. A. Applegate). Its core traits match exactly: YA science-fantasy setting, consistent first-person narration (rotating among the six protagonists), and a quartet of companion \u201cChronicles\u201d volumes that recount the back-stories of conquered planets",
+        "confidence": -0.11747013686724428,
+        "n_tokens": 595,
+        "correct": true
+      },
+      {
+        "id": "5adbf0a255429947ff17385a",
+        "question": "Are the Laleli Mosque and Esma Sultan Mansion located in the same neighborhood?",
+        "gold": "no",
+        "model_answer": "No \n\nThe Laleli Mosque is in the Laleli quarter of Istanbul\u2019s Fatih district. The best-known Esma Sultan Mansion (Esma Sultan Yal\u0131s\u0131) stands in Ortak\u00f6y on the Bosphorus; the two sites lie in separate neighborhoods several kilometers apart.",
+        "confidence": -0.14317755557290734,
+        "n_tokens": 476,
+        "correct": true
+      },
+      {
+        "id": "5a8e3ea95542995a26add48d",
+        "question": "The director of the romantic comedy \"Big Stone Gap\" is based in what New York city?",
+        "gold": "Greenwich Village, New York City",
+        "model_answer": "New York City \n\nThe director of the 2014 film *Big Stone Gap* is Adriana Trigiani, who maintains her primary residence in Manhattan, New York City.",
+        "confidence": -0.1515908524841485,
+        "n_tokens": 585,
+        "correct": false
+      },
+      {
+        "id": "5abd94525542992ac4f382d2",
+        "question": "2014 S/S is the debut album of a South Korean boy group that was formed by who?",
+        "gold": "YG Entertainment",
+        "model_answer": "YG Entertainment \n\nThe album \"2014 S/S\" is the debut release of the K-pop boy group WINNER. WINNER was assembled by YG Entertainment through its 2013 reality survival program \"WIN: Who Is Next,\" with final selection and formation overseen by YG's founder/CEO",
+        "confidence": -0.12779566895233724,
+        "n_tokens": 654,
+        "correct": true
+      },
+      {
+        "id": "5a85b2d95542997b5ce40028",
+        "question": "Who was known by his stage name Aladin and helped organizations improve their performance as a consultant?",
+        "gold": "Eenasul Fateh",
+        "model_answer": "I don't know",
+        "confidence": -0.236889349190004,
+        "n_tokens": 1748,
+        "correct": false
+      },
+      {
+        "id": "5a87ab905542996e4f3088c1",
+        "question": "The arena where the Lewiston Maineiacs played their home games can seat how many people?",
+        "gold": "3,677 seated",
+        "model_answer": "The Lewiston Maineiacs (QMJHL) played home games at the Androscoggin Bank Colis\u00e9e, which has a hockey seating capacity of 3,677. \n\n3677",
+        "confidence": -0.08186888030967088,
+        "n_tokens": 452,
+        "correct": false
+      },
+      {
+        "id": "5a7bbb64554299042af8f7cc",
+        "question": "Who is older, Annie Morton or Terry Richardson?",
+        "gold": "Terry Richardson",
+        "model_answer": "Terry Richardson",
+        "confidence": -0.08500874685326214,
+        "n_tokens": 237,
+        "correct": true
+      },
+      {
+        "id": "5a8db19d5542994ba4e3dd00",
+        "question": "Are Local H and For Against both from the United States?",
+        "gold": "yes",
+        "model_answer": "Yes",
+        "confidence": -0.1205819553866203,
+        "n_tokens": 210,
+        "correct": true
+      },
+      {
+        "id": "5a7166395542994082a3e814",
+        "question": "What is the name of the fight song of the university whose main campus is in Lawrence, Kansas and whose branch campuses are in the Kansas City metropolitan area?",
+        "gold": "Kansas Song",
+        "model_answer": "I'm a Jayhawk \n\nThe university described is the University of Kansas (KU), whose flagship campus is in Lawrence and which maintains medical and other facilities in the Kansas City metro. Its official fight song, written in 1912 by George \u201cDixie\u201d Lee Shank, is titled \u201cI\u2019m",
+        "confidence": -0.09754261393971768,
+        "n_tokens": 335,
+        "correct": false
+      },
+      {
+        "id": "5a877e5d5542993e715abf7d",
+        "question": "What screenwriter with credits for \"Evolution\" co-wrote a film starring Nicolas Cage and T\u00e9a Leoni?",
+        "gold": "David Weissman",
+        "model_answer": "David Diamond (or Weissman) \n\nThe 2001 sci-fi comedy *Evolution* was written by the team of Don Jakoby, David Diamond and David Weissman. Diamond and Weissman also co-wrote the 2000 romantic comedy *The Family Man*, which starred Nicolas Cage and T\u00e9",
+        "confidence": -0.1235262161254439,
+        "n_tokens": 880,
+        "correct": true
+      },
+      {
+        "id": "5ab3b0bf5542992ade7c6e39",
+        "question": "What year did Guns N Roses perform a promo for a movie starring Arnold Schwarzenegger as a former New York Police detective?",
+        "gold": "1999",
+        "model_answer": "1999 \n\nThe movie in question is *End of Days* (1999), in which Schwarzenegger plays Jericho Cane, a former NYPD detective. Guns N\u2019 Roses contributed the track \u201cOh My God\u201d to its soundtrack and recorded promotional spots tied to the film\u2019s November 1999 release",
+        "confidence": -0.1593007985844448,
+        "n_tokens": 703,
+        "correct": true
+      },
+      {
+        "id": "5ab56e32554299637185c594",
+        "question": "Are Random House Tower and 888 7th Avenue both used for real estate?",
+        "gold": "no",
+        "model_answer": "Yes",
+        "confidence": -0.15589327296425626,
+        "n_tokens": 403,
+        "correct": false
+      },
+      {
+        "id": "5ab6d09255429954757d337d",
+        "question": "The football manager who recruited David Beckham managed Manchester United during what timeframe?",
+        "gold": "from 1986 to 2013",
+        "model_answer": "1986\u20132013 \n\nThe manager in question is Alex Ferguson, who signed the young David Beckham for Manchester United in 1991 and led the club from November 1986 until May 2013.",
+        "confidence": -0.10410513164089143,
+        "n_tokens": 356,
+        "correct": false
+      },
+      {
+        "id": "5a75e05c55429976ec32bc5f",
+        "question": "Brown State Fishing Lake is in a country that has a population of how many inhabitants ?",
+        "gold": "9,984",
+        "model_answer": "333 million \n\nThe lake is located in Kansas, USA. The United States has a current population of approximately 333 million.",
+        "confidence": -0.17238266001711167,
+        "n_tokens": 546,
+        "correct": false
+      },
+      {
+        "id": "5ab3e45655429976abd1bcd4",
+        "question": "The Vermont Catamounts men's soccer team currently competes in a conference that was formerly known as what from 1988 to 1996?",
+        "gold": "the North Atlantic Conference",
+        "model_answer": "The Vermont Catamounts men's soccer team is a member of the America East Conference. That league was known as the North Atlantic Conference from 1988 to 1996.\n\n**North Atlantic Conference**",
+        "confidence": -0.07997330010388388,
+        "n_tokens": 395,
+        "correct": true
+      },
+      {
+        "id": "5ab29c24554299449642c932",
+        "question": "Are Giuseppe Verdi and Ambroise Thomas both Opera composers ?",
+        "gold": "yes",
+        "model_answer": "Yes",
+        "confidence": -0.08991729915010463,
+        "n_tokens": 200,
+        "correct": true
+      },
+      {
+        "id": "5ae0d4c9554299603e418468",
+        "question": "Roger O. Egeberg was Assistant Secretary for Health and Scientific Affairs during the administration of a president that served during what years?",
+        "gold": "1969 until 1974",
+        "model_answer": "1969-1974 \n\nThe query concerns Roger O. Egeberg\u2019s federal appointment as Assistant Secretary for Health and Scientific Affairs. Historical records show that President Richard Nixon created and filled this post in 1969; Egeberg served until 1971 and Nixon\u2019s own term ended in",
+        "confidence": -0.10951774953743422,
+        "n_tokens": 401,
+        "correct": false
+      },
+      {
+        "id": "5a8133725542995ce29dcbdb",
+        "question": "Which writer was from England, Henry Roth or Robert Erskine Childers?",
+        "gold": "Robert Erskine Childers DSC",
+        "model_answer": "Robert Erskine Childers",
+        "confidence": -0.12036401143315341,
+        "n_tokens": 389,
+        "correct": true
+      },
+      {
+        "id": "5ae7a8175542993210983ed8",
+        "question": "Which other Mexican Formula One race car driver has held the podium besides the Force India driver born in 1990?",
+        "gold": "Pedro Rodr\u00edguez",
+        "model_answer": "Pedro Rodr\u00edguez \n\nThe Force India driver born in 1990 is Sergio P\u00e9rez. Among all Mexican F1 drivers, the only other one with podium finishes (in fact two wins) is Pedro Rodr\u00edguez. No other Mexican driver has reached the podium.",
+        "confidence": -0.11891694520574583,
+        "n_tokens": 543,
+        "correct": true
+      },
+      {
+        "id": "5ae6050f55429929b0807a5e",
+        "question": "This singer of A Rather Blustery Day also voiced what hedgehog?",
+        "gold": "Sonic",
+        "model_answer": "The song \"A Rather Blustery Day\" originates from the 1968 Disney short *Winnie the Pooh and the Blustery Day* (later incorporated into *The Many Adventures of Winnie the Pooh*). It is performed in-character by the voice of Winnie the Pooh.",
+        "confidence": -0.2016100291295058,
+        "n_tokens": 1486,
+        "correct": false
+      },
+      {
+        "id": "5adddccd5542997dc7907069",
+        "question": "Aside from the Apple Remote, what other device can control the program Apple Remote was originally designed to interact with?",
+        "gold": "keyboard function keys",
+        "model_answer": "The Apple Remote was introduced to control Front Row (the media-center frontend on macOS). Front Row could also be driven by the official Apple Remote iOS app running on an iPhone or iPod touch.\n\nFinal answer: iPhone/iPod touch (Remote app)",
+        "confidence": -0.13379889677329124,
+        "n_tokens": 926,
+        "correct": false
+      },
+      {
+        "id": "5ae2070a5542994d89d5b313",
+        "question": "Which performance act has a higher instrument to person ratio, Badly Drawn Boy or Wolf Alice? ",
+        "gold": "Badly Drawn Boy",
+        "model_answer": "Badly Drawn Boy \n\nThe question concerns live performance setups. Badly Drawn Boy is a solo project (Damon Gough) in which one performer routinely handles multiple instruments (guitar, keyboards, vocals, occasional harmonica or loops). Wolf Alice is a four-piece band in which the",
+        "confidence": -0.18802060243369317,
+        "n_tokens": 791,
+        "correct": true
+      },
+      {
+        "id": "5ae22b8d554299234fd0440f",
+        "question": "What was the father of Kasper Schmeichel voted to be by the IFFHS in 1992?",
+        "gold": "World's Best Goalkeeper",
+        "model_answer": "World's Best Goalkeeper \n\nThe father of Kasper Schmeichel is Peter Schmeichel. In 1992 (the year Denmark won Euro 92), the IFFHS ranked him #1 among all goalkeepers worldwide, awarding him the title IFFHS World's Best Goalkeeper",
+        "confidence": -0.06542817653050181,
+        "n_tokens": 377,
+        "correct": true
+      }
+    ],
+    "1.0": [
+      {
+        "id": "5a8b57f25542995d1e6f1371",
+        "question": "Were Scott Derrickson and Ed Wood of the same nationality?",
+        "gold": "yes",
+        "model_answer": "Yes",
+        "confidence": -0.10199683246597396,
+        "n_tokens": 206,
+        "correct": true
+      },
+      {
+        "id": "5a8c7595554299585d9e36b6",
+        "question": "What government position was held by the woman who portrayed Corliss Archer in the film Kiss and Tell?",
+        "gold": "Chief of Protocol",
+        "model_answer": "US Ambassador to Ghana (or Czechoslovakia) \n\nThe actress is Shirley Temple (later Shirley Temple Black), who starred as Corliss Archer in the 1945 film *Kiss and Tell*. In later life she held several diplomatic posts, most prominently as U.S. Ambassador to Ghana (1974\u2013",
+        "confidence": -0.19684609829375108,
+        "n_tokens": 709,
+        "correct": false
+      },
+      {
+        "id": "5a85ea095542994775f606a8",
+        "question": "What science fantasy young adult series, told in first person, has a set of companion books narrating the stories of enslaved worlds and alien species?",
+        "gold": "Animorphs",
+        "model_answer": "Animorphs (Chronicles) \n\nThe query describes the Animorphs series (K. A. Applegate, 1996\u20132001). It is a first-person YA science-fantasy sequence whose main arc is narrated by rotating human and alien protagonists; a parallel set of five stand-alone",
+        "confidence": -0.16557513368872218,
+        "n_tokens": 359,
+        "correct": true
+      },
+      {
+        "id": "5adbf0a255429947ff17385a",
+        "question": "Are the Laleli Mosque and Esma Sultan Mansion located in the same neighborhood?",
+        "gold": "no",
+        "model_answer": "No \n\n(The Laleli Mosque is in Laleli/Fatih; the main Esma Sultan Mansion/Yal\u0131s\u0131 is in Ortak\u00f6y/Be\u015fikta\u015f.)",
+        "confidence": -0.17738863521733395,
+        "n_tokens": 353,
+        "correct": true
+      },
+      {
+        "id": "5a8e3ea95542995a26add48d",
+        "question": "The director of the romantic comedy \"Big Stone Gap\" is based in what New York city?",
+        "gold": "Greenwich Village, New York City",
+        "model_answer": "New York City (Manhattan) \n\nThe director is Adriana Trigiani, who is based in Manhattan.",
+        "confidence": -0.15318837396549864,
+        "n_tokens": 387,
+        "correct": false
+      },
+      {
+        "id": "5abd94525542992ac4f382d2",
+        "question": "2014 S/S is the debut album of a South Korean boy group that was formed by who?",
+        "gold": "YG Entertainment",
+        "model_answer": "Yang Hyun-suk (YG) \n\nThe album *2014 S/S* is the debut studio album of the K-pop boy group WINNER. WINNER was assembled by YG Entertainment through its 2013 reality competition series *WIN: Who Is Next*, with final member selection and group formation",
+        "confidence": -0.16522165830058078,
+        "n_tokens": 645,
+        "correct": true
+      },
+      {
+        "id": "5a85b2d95542997b5ce40028",
+        "question": "Who was known by his stage name Aladin and helped organizations improve their performance as a consultant?",
+        "gold": "Eenasul Fateh",
+        "model_answer": "Werner Neumann (magician) \n\n(The stage name \u201cAladin\u201d belonged to the mid-20th-century German magician Werner Neumann, who later worked as a management/performance-improvement consultant.)",
+        "confidence": -0.38654206535043917,
+        "n_tokens": 1656,
+        "correct": false
+      },
+      {
+        "id": "5a87ab905542996e4f3088c1",
+        "question": "The arena where the Lewiston Maineiacs played their home games can seat how many people?",
+        "gold": "3,677 seated",
+        "model_answer": "**3,677** \n\nThe Lewiston Maineiacs (QMJHL) played home games at the Androscoggin Bank Colis\u00e9e in Lewiston, Maine, whose hockey capacity is listed as 3,677.",
+        "confidence": -0.14782228585977225,
+        "n_tokens": 397,
+        "correct": false
+      },
+      {
+        "id": "5a7bbb64554299042af8f7cc",
+        "question": "Who is older, Annie Morton or Terry Richardson?",
+        "gold": "Terry Richardson",
+        "model_answer": "Terry Richardson",
+        "confidence": -0.15461764524003374,
+        "n_tokens": 282,
+        "correct": true
+      },
+      {
+        "id": "5a8db19d5542994ba4e3dd00",
+        "question": "Are Local H and For Against both from the United States?",
+        "gold": "yes",
+        "model_answer": "Yes",
+        "confidence": -0.1975713146381879,
+        "n_tokens": 235,
+        "correct": true
+      },
+      {
+        "id": "5a7166395542994082a3e814",
+        "question": "What is the name of the fight song of the university whose main campus is in Lawrence, Kansas and whose branch campuses are in the Kansas City metropolitan area?",
+        "gold": "Kansas Song",
+        "model_answer": "I'm a Jayhawk \n\nThe university is the University of Kansas (KU), with its flagship campus in Lawrence and additional campuses in the Kansas City metro. Its official fight song, composed in 1912, is titled \u201cI\u2019m a Jayhawk.\u201d",
+        "confidence": -0.12740441965699417,
+        "n_tokens": 387,
+        "correct": false
+      },
+      {
+        "id": "5a877e5d5542993e715abf7d",
+        "question": "What screenwriter with credits for \"Evolution\" co-wrote a film starring Nicolas Cage and T\u00e9a Leoni?",
+        "gold": "David Weissman",
+        "model_answer": "David Diamond & David Weissman \n\n(The writers are a team; both share \"Evolution\" and \"The Family Man\" credits.)",
+        "confidence": -0.22189300638450546,
+        "n_tokens": 865,
+        "correct": true
+      },
+      {
+        "id": "5ab3b0bf5542992ade7c6e39",
+        "question": "What year did Guns N Roses perform a promo for a movie starring Arnold Schwarzenegger as a former New York Police detective?",
+        "gold": "1999",
+        "model_answer": "1999 \n\nThe film in question is *End of Days* (1999), in which Schwarzenegger plays Jericho Cane, a retired NYPD detective. Guns N\u2019 Roses contributed the track \u201cOh My God\u201d to its soundtrack and appeared in promotional spots tied to the movie\u2019s release that year.",
+        "confidence": -0.20200931052482876,
+        "n_tokens": 925,
+        "correct": true
+      },
+      {
+        "id": "5ab56e32554299637185c594",
+        "question": "Are Random House Tower and 888 7th Avenue both used for real estate?",
+        "gold": "no",
+        "model_answer": "Yes",
+        "confidence": -0.21352316552644085,
+        "n_tokens": 398,
+        "correct": false
+      },
+      {
+        "id": "5ab6d09255429954757d337d",
+        "question": "The football manager who recruited David Beckham managed Manchester United during what timeframe?",
+        "gold": "from 1986 to 2013",
+        "model_answer": "1986\u20132013 \n\nThe manager in question is Alex Ferguson, who signed the young David Beckham to Manchester United\u2019s youth system in 1991 and led the senior team from November 1986 until May 2013.",
+        "confidence": -0.17174814430114038,
+        "n_tokens": 351,
+        "correct": false
+      },
+      {
+        "id": "5a75e05c55429976ec32bc5f",
+        "question": "Brown State Fishing Lake is in a country that has a population of how many inhabitants ?",
+        "gold": "9,984",
+        "model_answer": "331 million \n\nThe lake is located in Kansas, USA; the US population is approximately 331 million (2023 estimate).",
+        "confidence": -0.20719833380018574,
+        "n_tokens": 388,
+        "correct": false
+      },
+      {
+        "id": "5ab3e45655429976abd1bcd4",
+        "question": "The Vermont Catamounts men's soccer team currently competes in a conference that was formerly known as what from 1988 to 1996?",
+        "gold": "the North Atlantic Conference",
+        "model_answer": "The Vermont Catamounts men's soccer team is a member of the America East Conference. That league was known as the North Atlantic Conference from 1988 to 1996.  \n**North Atlantic Conference**",
+        "confidence": -0.11317937851388601,
+        "n_tokens": 300,
+        "correct": true
+      },
+      {
+        "id": "5ab29c24554299449642c932",
+        "question": "Are Giuseppe Verdi and Ambroise Thomas both Opera composers ?",
+        "gold": "yes",
+        "model_answer": "Yes",
+        "confidence": -0.09722971968142512,
+        "n_tokens": 129,
+        "correct": true
+      },
+      {
+        "id": "5ae0d4c9554299603e418468",
+        "question": "Roger O. Egeberg was Assistant Secretary for Health and Scientific Affairs during the administration of a president that served during what years?",
+        "gold": "1969 until 1974",
+        "model_answer": "1969-1974 \n\nThe query identifies Roger O. Egeberg\u2019s federal role (Assistant Secretary for Health and Scientific Affairs, 1969\u20131971) under a single U.S. president. That president is Richard Nixon, whose term of office ran from 20 January 1969",
+        "confidence": -0.13826954477704423,
+        "n_tokens": 362,
+        "correct": false
+      },
+      {
+        "id": "5a8133725542995ce29dcbdb",
+        "question": "Which writer was from England, Henry Roth or Robert Erskine Childers?",
+        "gold": "Robert Erskine Childers DSC",
+        "model_answer": "Robert Erskine Childers",
+        "confidence": -0.193898263978113,
+        "n_tokens": 325,
+        "correct": true
+      },
+      {
+        "id": "5ae7a8175542993210983ed8",
+        "question": "Which other Mexican Formula One race car driver has held the podium besides the Force India driver born in 1990?",
+        "gold": "Pedro Rodr\u00edguez",
+        "model_answer": "Pedro Rodr\u00edguez \n\nThe Force India driver born in 1990 is Sergio P\u00e9rez. The only other Mexican F1 driver with podium finishes (including two wins) is Pedro Rodr\u00edguez. All other Mexican entrants (e.g., Ricardo Rodr\u00edguez, H\u00e9ctor Rebaque) have none.",
+        "confidence": -0.20868338234551106,
+        "n_tokens": 498,
+        "correct": true
+      },
+      {
+        "id": "5ae6050f55429929b0807a5e",
+        "question": "This singer of A Rather Blustery Day also voiced what hedgehog?",
+        "gold": "Sonic",
+        "model_answer": "Sonic the Hedgehog \n\nThe query identifies the performer of the Winnie the Pooh track \u201cA Rather Blustery Day\u201d (originally Sterling Holloway, later Jim Cummings) and asks for the hedgehog character that same performer also voiced; the only widely recognized hedgehog match in that performer\u2019s filmography",
+        "confidence": -0.2907663034439552,
+        "n_tokens": 1394,
+        "correct": true
+      },
+      {
+        "id": "5adddccd5542997dc7907069",
+        "question": "Aside from the Apple Remote, what other device can control the program Apple Remote was originally designed to interact with?",
+        "gold": "keyboard function keys",
+        "model_answer": "The Apple Remote (hardware) originally controlled Apple's Front Row media interface on Macs. Front Row could also be controlled via the official Remote app on iOS devices (iPhone/iPod touch) that communicated with iTunes/Front Row over the network.\n\nFinal answer: iPhone/iPod touch (Remote",
+        "confidence": -0.32993644145440465,
+        "n_tokens": 1517,
+        "correct": false
+      },
+      {
+        "id": "5ae2070a5542994d89d5b313",
+        "question": "Which performance act has a higher instrument to person ratio, Badly Drawn Boy or Wolf Alice? ",
+        "gold": "Badly Drawn Boy",
+        "model_answer": "Badly Drawn Boy \n\nThe act consists of one performer (Damon Gough) handling multiple instruments, producing a higher instruments-per-person ratio than Wolf Alice\u2019s standard four-piece rock-band configuration (roughly one primary instrument per member).",
+        "confidence": -0.29017577527017974,
+        "n_tokens": 706,
+        "correct": true
+      },
+      {
+        "id": "5ae22b8d554299234fd0440f",
+        "question": "What was the father of Kasper Schmeichel voted to be by the IFFHS in 1992?",
+        "gold": "World's Best Goalkeeper",
+        "model_answer": "World's Best Goalkeeper \n\nThe query concerns Peter Schmeichel (Kasper Schmeichel\u2019s father). In 1992 the IFFHS awarded him its annual \u201cWorld\u2019s Best Goalkeeper\u201d title on the basis of statistical performance across club and international matches. The same honour was repeated in",
+        "confidence": -0.10931685253929552,
+        "n_tokens": 355,
+        "correct": true
+      }
+    ]
+  },
+  "summary": {
+    "0.0": {
+      "n": 25,
+      "n_scored": 25,
+      "n_correct": 13,
+      "auroc": 0.3269230769230769,
+      "auroc_ci_low": 0.11038961038961038,
+      "auroc_ci_high": 0.5666666666666667,
+      "auroc_ci_halfwidth": 0.22813852813852814,
+      "mean_conf_correct": -5.389740948075774e-09,
+      "mean_conf_wrong": -4.312883510272595e-09,
+      "tau80": -6.563950277209519e-09,
+      "max_abs_logprob": 8.249769656267057e-09,
+      "readable": false
+    },
+    "0.2": {
+      "n": 25,
+      "n_scored": 25,
+      "n_correct": 15,
+      "auroc": 0.5,
+      "auroc_ci_low": 0.24603174603174602,
+      "auroc_ci_high": 0.7777777777777778,
+      "auroc_ci_halfwidth": 0.26587301587301587,
+      "mean_conf_correct": -0.03615036786501762,
+      "mean_conf_wrong": -0.037790994433939636,
+      "tau80": -0.044559986629359845,
+      "max_abs_logprob": 0.0701935754443921,
+      "readable": false
+    },
+    "0.5": {
+      "n": 25,
+      "n_scored": 25,
+      "n_correct": 15,
+      "auroc": 0.4866666666666667,
+      "auroc_ci_low": 0.2222222222222222,
+      "auroc_ci_high": 0.7132352941176471,
+      "auroc_ci_halfwidth": 0.24550653594771243,
+      "mean_conf_correct": -0.08460913381069714,
+      "mean_conf_wrong": -0.09271750661661349,
+      "tau80": -0.10626104200989765,
+      "max_abs_logprob": 0.20445170479795727,
+      "readable": false
+    },
+    "0.7": {
+      "n": 25,
+      "n_scored": 25,
+      "n_correct": 14,
+      "auroc": 0.6168831168831169,
+      "auroc_ci_low": 0.3819444444444444,
+      "auroc_ci_high": 0.8311688311688312,
+      "auroc_ci_halfwidth": 0.2246121933621934,
+      "mean_conf_correct": -0.11776507847172195,
+      "mean_conf_wrong": -0.14047713544741436,
+      "tau80": -0.15589327296425626,
+      "max_abs_logprob": 0.236889349190004,
+      "readable": false
+    },
+    "1.0": {
+      "n": 25,
+      "n_scored": 25,
+      "n_correct": 15,
+      "auroc": 0.5666666666666667,
+      "auroc_ci_low": 0.3014705882352941,
+      "auroc_ci_high": 0.7936507936507936,
+      "auroc_ci_halfwidth": 0.24609010270774975,
+      "mean_conf_correct": -0.1793015474821688,
+      "mean_conf_wrong": -0.2072478872985671,
+      "tau80": -0.21352316552644085,
+      "max_abs_logprob": 0.38654206535043917,
+      "readable": false
+    }
+  },
+  "derived": {
+    "auroc_range_S": 0.1302,
+    "tau80_drift_S": 0.169,
+    "temp0_max_abs_logprob": 0.0
+  }
+}
