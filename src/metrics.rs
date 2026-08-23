@@ -54,6 +54,26 @@ pub static TOKEN_SAVINGS_TOTAL: LazyLock<Counter> = LazyLock::new(|| {
     counter
 });
 
+pub static DEGENERATE_SIGNAL_TOTAL: LazyLock<Counter> = LazyLock::new(|| {
+    let counter = Counter::new(
+        "raggate_degenerate_signal_total",
+        "Streams where the logprob signal was degenerate (mean ≈ 0 — likely temperature-0/greedy decoding); gating disabled for the remainder of the stream",
+    )
+    .unwrap();
+    REGISTRY.register(Box::new(counter.clone())).unwrap();
+    counter
+});
+
+pub static NO_LOGPROB_SIGNAL_TOTAL: LazyLock<Counter> = LazyLock::new(|| {
+    let counter = Counter::new(
+        "raggate_no_logprob_signal_total",
+        "Streams that completed with zero logprob-bearing frames despite logprobs being requested — the upstream never emitted the field at all (silently unsupported model/provider), distinct from the degenerate near-zero case; gating was inert for the whole stream",
+    )
+    .unwrap();
+    REGISTRY.register(Box::new(counter.clone())).unwrap();
+    counter
+});
+
 pub static PROXY_LATENCY_MS: LazyLock<Histogram> = LazyLock::new(|| {
     let histogram = Histogram::with_opts(
         prometheus::HistogramOpts::new("raggate_proxy_latency_ms", "Added latency vs. direct API call")

@@ -1,5 +1,8 @@
 use crate::evaluator::{ConfidenceEvaluator, Decision};
-use crate::metrics::{CONFIDENCE_SCORE, DECISIONS_TOTAL, TOKENS_EVALUATED, TOKEN_SAVINGS_TOTAL};
+use crate::metrics::{
+    CONFIDENCE_SCORE, DECISIONS_TOTAL, DEGENERATE_SIGNAL_TOTAL, NO_LOGPROB_SIGNAL_TOTAL,
+    TOKENS_EVALUATED, TOKEN_SAVINGS_TOTAL,
+};
 use futures_util::Stream;
 use serde::Serialize;
 use serde_json::Value;
@@ -10,7 +13,9 @@ use bytes::Bytes;
 
 /// Wire protocol of the upstream stream. OpenAI-compatible APIs use SSE
 /// (`data: {json}\n\n`); Ollama's native endpoints use NDJSON (one bare JSON
-/// object per `\n`-terminated line).
+/// object per `\n`-terminated line); Gemini's native
+/// `streamGenerateContent?alt=sse` uses standard SSE framing with a different
+/// JSON payload shape.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Protocol {
     /// Server-Sent Events: `data: {json}\n\n`, terminated by `data: [DONE]`.
@@ -18,13 +23,21 @@ pub enum Protocol {
     /// Newline-delimited JSON: one bare `{json}\n` object per line, as emitted
     /// by Ollama's `/api/chat` and `/api/generate`.
     Ndjson,
+    /// Gemini native SSE (`streamGenerateContent?alt=sse`): standard SSE
+    /// framing, but logprobs — when the model emits them — live at
+    /// `candidates[0].logprobsResult.chosenCandidates[].logProbability`.
+    /// As of 2026-08-22 no AI Studio model has logprobs enabled (probed all
+    /// 50 — see `benchmarks/gemini_logprob_probe.py`), so this transport
+    /// currently no-ops exactly like Ollama's and gating activates
+    /// automatically if Google enables the server-side flag.
+    Gemini,
 }
 
 impl Protocol {
     /// The byte sequence that terminates one complete frame on this protocol.
     fn frame_separator(self) -> &'static [u8] {
         match self {
-            Protocol::Sse => b"\n\n",
+            Protocol::Sse | Protocol::Gemini => b"\n\n",
             Protocol::Ndjson => b"\n",
         }
     }
@@ -45,6 +58,21 @@ pub struct InterceptedStream<S> {
     lookahead_size: usize,
     finished: bool,
     protocol: Protocol,
+    /// Set once the evaluator's degeneracy check fires (temperature-0/greedy
+    /// artifact: every logprob ≈ 0). For the rest of the stream the gate is
+    /// disabled and frames pass through — a dead signal must not masquerade
+    /// as "confident".
+    signal_degenerate: bool,
+    /// Whether `logprobs`/`responseLogprobs` was actually requested for this
+    /// stream. Only meaningful for judging a zero-logprob stream at the end:
+    /// if the field was never requested, an empty signal is expected, not a
+    /// silent upstream failure.
+    logprobs_requested: bool,
+    /// True once at least one frame with a parseable body (not just SSE
+    /// framing) has been processed, regardless of whether it carried a
+    /// logprob. Distinguishes "upstream sent frames but never included the
+    /// logprobs field" from "stream was empty/errored before any content."
+    any_frame_processed: bool,
     /// Raw bytes carried over from a previous poll that didn't yet contain a
     /// complete frame. A TCP/HTTP chunk boundary can land mid-frame, so frames
     /// must be reassembled here before parsing rather than parsed off each raw
@@ -55,15 +83,39 @@ pub struct InterceptedStream<S> {
 impl<S> InterceptedStream<S> {
     /// Constructs an interceptor for an OpenAI-compatible SSE upstream. Kept
     /// for backward compatibility — `new_with_protocol` is the general form.
+    /// `logprobs_requested` defaults to `false` here (not `true`): callers
+    /// using this shim haven't opted into the no-signal guard's distinction
+    /// between "didn't ask" and "asked and got nothing", so it stays quiet
+    /// rather than firing on every zero-logprob stream. `proxy.rs` calls
+    /// `new_with_protocol_and_request` directly and sets this accurately.
     pub fn new(inner: S, evaluator: ConfidenceEvaluator, lookahead_size: usize) -> Self {
         Self::new_with_protocol(inner, evaluator, lookahead_size, Protocol::Sse)
     }
 
+    /// Kept for backward compatibility (existing tests and any external
+    /// caller not using the request-aware constructor). Defaults
+    /// `logprobs_requested` to `false` — see `new`'s doc comment.
     pub fn new_with_protocol(
         inner: S,
         evaluator: ConfidenceEvaluator,
         lookahead_size: usize,
         protocol: Protocol,
+    ) -> Self {
+        Self::new_with_protocol_and_request(inner, evaluator, lookahead_size, protocol, false)
+    }
+
+    /// General constructor. `logprobs_requested` should reflect whether the
+    /// outgoing request actually asked the upstream for logprobs (i.e.
+    /// `inject_logprobs` was on, or the client's own body already requested
+    /// them) — it gates the end-of-stream "upstream never sent any logprobs"
+    /// warning so an intentional `inject_logprobs = false` setup doesn't
+    /// trip it.
+    pub fn new_with_protocol_and_request(
+        inner: S,
+        evaluator: ConfidenceEvaluator,
+        lookahead_size: usize,
+        protocol: Protocol,
+        logprobs_requested: bool,
     ) -> Self {
         Self {
             inner,
@@ -72,6 +124,9 @@ impl<S> InterceptedStream<S> {
             lookahead_size,
             finished: false,
             protocol,
+            signal_degenerate: false,
+            logprobs_requested,
+            any_frame_processed: false,
             partial_frame: Vec::new(),
         }
     }
@@ -115,7 +170,7 @@ impl<S> InterceptedStream<S> {
 
         let json = serde_json::to_string(&frame).unwrap();
         match self.protocol {
-            Protocol::Sse => Bytes::from(format!("data: {}\n\n", json)),
+            Protocol::Sse | Protocol::Gemini => Bytes::from(format!("data: {}\n\n", json)),
             Protocol::Ndjson => Bytes::from(format!("{}\n", json)),
         }
     }
@@ -169,6 +224,30 @@ where
                         DECISIONS_TOTAL.with_label_values(&["ANSWER"]).inc();
                         CONFIDENCE_SCORE.observe(self.evaluator.current_confidence());
                         TOKENS_EVALUATED.observe(self.evaluator.count() as f64);
+
+                        // The stream completed, produced at least one parseable
+                        // frame, logprobs were actually requested, and yet the
+                        // evaluator never received a single one. Unlike the
+                        // degenerate-guard case (logprobs present but stuck near
+                        // zero), this is the field being absent from the wire
+                        // entirely — a provider/model that silently ignores the
+                        // logprobs request (e.g. xAI's grok-4.20+ line, verified
+                        // 2026-08-23) rather than rejecting it outright. Gating
+                        // was inert for the whole stream; the guard exists so
+                        // that fact is visible instead of masquerading as a
+                        // clean ANSWER.
+                        if self.logprobs_requested
+                            && self.any_frame_processed
+                            && self.evaluator.count() == 0
+                        {
+                            NO_LOGPROB_SIGNAL_TOTAL.inc();
+                            tracing::warn!(
+                                "no logprobs received for this stream despite requesting them; \
+                                 the upstream model/provider likely does not emit them (silently \
+                                 ignored, not rejected) — confidence gating was inert for the \
+                                 entire stream, see Known Limitations"
+                            );
+                        }
                     }
                     self.finished = true;
                     return if let Some(chunk) = self.lookahead_buffer.pop_front() {
@@ -205,6 +284,41 @@ where
             return false;
         };
         Self::feed_openai_logprobs(&value, evaluator)
+    }
+
+    /// Parses one `data: {json}` frame from Gemini's native
+    /// `streamGenerateContent?alt=sse` stream. Logprobs, when present, sit at
+    /// `candidates[0].logprobsResult.chosenCandidates[].logProbability`
+    /// (natural-log units, same as OpenAI's `logprob`). As of 2026-08-22 no
+    /// AI Studio model emits them, so in practice this returns false and the
+    /// frame passes through ungated — the same forward-compatible stance as
+    /// the Ollama transport. If Google enables them, gating activates with no
+    /// further changes.
+    fn extract_gemini_logprobs(text: &str, evaluator: &mut ConfidenceEvaluator) -> bool {
+        if !text.starts_with("data: ") || text.trim() == "data: [DONE]" {
+            return false;
+        }
+        let Ok(value) = serde_json::from_str::<Value>(&text[6..]) else {
+            return false;
+        };
+        let Some(chosen) = value
+            .get("candidates")
+            .and_then(|c| c.as_array())
+            .and_then(|arr| arr.first())
+            .and_then(|cand| cand.get("logprobsResult"))
+            .and_then(|lr| lr.get("chosenCandidates"))
+            .and_then(|cc| cc.as_array())
+        else {
+            return false;
+        };
+        let mut found = false;
+        for cand in chosen {
+            if let Some(lp) = cand.get("logProbability").and_then(|v| v.as_f64()) {
+                evaluator.add_logprob(lp);
+                found = true;
+            }
+        }
+        found
     }
 
     /// Parses one NDJSON line as emitted by Ollama's native endpoints. Ollama's
@@ -268,13 +382,30 @@ where
     ) -> Option<Result<Bytes, axum::Error>> {
         let this = self.get_mut();
         let text = String::from_utf8_lossy(&chunk);
+        this.any_frame_processed = true;
 
         let logprob_found = match this.protocol {
             Protocol::Sse => Self::extract_sse_logprobs(&text, &mut this.evaluator),
             Protocol::Ndjson => Self::extract_ndjson_logprobs(&text, &mut this.evaluator),
+            Protocol::Gemini => Self::extract_gemini_logprobs(&text, &mut this.evaluator),
         };
 
-        if logprob_found {
+        // Degenerate-signal guard: check once per frame after extraction. If
+        // the running mean is still ≈ 0 past the warmup window, this stream is
+        // almost certainly greedy-decoded and the confidence signal carries no
+        // information — warn, count it, and stop gating this stream.
+        if logprob_found && !this.signal_degenerate && this.evaluator.is_degenerate() {
+            this.signal_degenerate = true;
+            DEGENERATE_SIGNAL_TOTAL.inc();
+            tracing::warn!(
+                mean_logprob = this.evaluator.current_confidence(),
+                tokens = this.evaluator.count(),
+                "confidence signal degenerate (mean logprob ≈ 0 — likely temperature-0/greedy \
+                 decoding); disabling gating for this stream, see Known Limitations"
+            );
+        }
+
+        if logprob_found && !this.signal_degenerate {
             let decision = this.evaluator.evaluate();
             match decision {
                 Decision::Answer => {
