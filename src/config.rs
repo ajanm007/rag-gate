@@ -13,10 +13,23 @@ pub struct GatingThresholds {
     /// floor the stream always passes through (ANSWER). Set to 1 to disable.
     #[serde(default = "default_min_tokens")]
     pub min_tokens: usize,
+    /// When true, streams whose running mean logprob stays above ≈ 0 after a
+    /// warmup window are treated as having a degenerate confidence signal —
+    /// the temperature-0/greedy-decoding artifact where every reported
+    /// logprob is ≈ 0 and the gate would silently never fire. Detection
+    /// disables gating for that stream, logs a warning, and increments
+    /// `raggate_degenerate_signal_total`. Disable only if you serve a model
+    /// that legitimately reports near-zero logprobs under sampling.
+    #[serde(default = "default_degenerate_guard")]
+    pub degenerate_guard: bool,
 }
 
 fn default_min_tokens() -> usize {
     4
+}
+
+fn default_degenerate_guard() -> bool {
+    true
 }
 
 impl Default for GatingThresholds {
@@ -25,6 +38,7 @@ impl Default for GatingThresholds {
             answer_alpha: -0.5,
             abstain_beta: -1.2,
             min_tokens: default_min_tokens(),
+            degenerate_guard: default_degenerate_guard(),
         }
     }
 }
@@ -35,9 +49,11 @@ pub struct ProxyConfig {
     pub upstream_url: String,
     #[serde(default)]
     pub thresholds: GatingThresholds,
-    /// Whether to force-inject `logprobs: true` into outgoing OpenAI-style
-    /// requests. Some upstreams (notably Gemini's OpenAI-compat endpoint)
-    /// reject the field with a 400. Disable for those, accepting that gating
+    /// Whether to force-inject the logprobs request flag: `logprobs: true`
+    /// for OpenAI-style requests, `generationConfig.responseLogprobs: true`
+    /// for Gemini-native ones. Some upstreams reject the field with a 400
+    /// (Gemini's OpenAI-compat layer; every AI Studio model as of 2026-08-22,
+    /// while Vertex AI accepts it). Disable for those, accepting that gating
     /// then only works if the client itself requests logprobs.
     #[serde(default = "default_inject_logprobs")]
     pub inject_logprobs: bool,
@@ -110,6 +126,10 @@ impl ProxyConfig {
         if let Ok(v) = env::var("RAGGATE_MIN_TOKENS")
             && let Ok(v) = v.parse() {
                 config.thresholds.min_tokens = v;
+            }
+        if let Ok(v) = env::var("RAGGATE_DEGENERATE_GUARD")
+            && let Ok(v) = v.parse() {
+                config.thresholds.degenerate_guard = v;
             }
         if let Ok(v) = env::var("RAGGATE_INJECT_LOGPROBS")
             && let Ok(v) = v.parse() {
