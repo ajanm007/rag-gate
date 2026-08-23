@@ -155,7 +155,57 @@ on invalid OpenAI/Anthropic keys); and grok-4.5 is noticeably slower (one reques
 exceeded a 40s read timeout) — a real consideration for a latency-sensitive proxy,
 and an argument for keeping any recovery feature opt-in, capped, and time-bounded.
 
-## Reproducing
+## Temperature-stability sweep (`temperature_sweep_eval.py`)
+
+Fills the one open cell in the signal decision: how much information mean-logprob
+retains across serving temperatures, and how far the operating threshold drifts.
+Decision rules were pre-registered in `signal_decision.md` before any run.
+
+**Two reference models, two eras** — the original (grok-3-mini) was retired from
+the live API mid-August 2026 (it now serves content but silently omits logprobs),
+so the sweep was re-run fresh on the replacement reference upstream. The rules
+never changed between runs; the verdicts below are per-model, empirical.
+
+**grok-3-mini** (historical, unreproducible-as-of-2026-08; answer-token
+confidence via `reasoning_effort: "none"`, n=100):
+
+- Signal strong at serving temps: AUROC 0.824/0.844/0.820 at 0.5/0.7/1.0.
+- **Temp-0 hard floor, total**: every temp-0 mean logprob was exactly 0.0000.
+- τ80 drift ~1.06 nats (−0.20 → −1.26, monotone).
+- Low temps degrade ranking: 0.671 at temp 0.2, dead at 0.0.
+- Reasoning tokens kill the signal (AUROC 0.49–0.62, reasoning-on condition).
+
+**openai/gpt-4o-mini via OpenRouter** (current reference, 2026-08-23, n=100;
+full tables and verdicts in `signal_decision.md`):
+
+- **Ranking stable across ALL temperatures, temp 0 included**: AUROC
+  0.822/0.814/0.728/0.804/0.795 at 0.0/0.2/0.5/0.7/1.0 — R1 stable (range
+  0.086 < 0.10).
+- **No temp-0 collapse on this family** (max |mean| 1.96 ≫ 0.05; temp 0 is its
+  *best* cell) — the grok hard-floor verdict was a provider-specific
+  post-temperature-scaling artifact, not a law of the signal. The shipped
+  degenerate guard handles both cases correctly: silent here, firing on xAI.
+- **τ80 drift 0.72 nats** (−0.46 → −1.18, concentrated 0.7→1.0) — temperature
+  normalization re-confirmed on a second model family.
+- Pathological single-token logprobs (−2001, −3333) appear at temp ≥ 0.7 —
+  robust-aggregation (median/clipping) flagged as future work.
+
+**Cross-family invariant**: ranking is real and roughly temperature-stable;
+the operating threshold is never temperature-portable; the temp-0 artifact is
+provider-specific.
+
+```bash
+export GROK_API_KEY=...                                        # historical (dead upstream)
+python temperature_sweep_eval.py --reasoning-effort none       # grok primary condition
+python temperature_sweep_eval.py                               # grok reasoning-on robustness
+
+export OPEN_ROUTER_KEY=...                                     # current reference upstream
+python temperature_sweep_eval.py \
+  --api-base https://openrouter.ai/api/v1/chat/completions \
+  --model openai/gpt-4o-mini --key-env OPEN_ROUTER_KEY         # gpt-4o-mini sweep
+```
+
+
 
 ```bash
 pip install requests

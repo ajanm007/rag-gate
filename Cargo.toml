@@ -1,6 +1,6 @@
 [package]
 name = "rag-gate"
-version = "0.2.1"
+version = "0.3.0"
 edition = "2024"
 description = "Inference-time confidence middleware for RAG pipelines — gates LLM streams into ANSWER, ABSTAIN, or ESCALATE using token logprobs"
 keywords = ["llm", "rag", "confidence", "proxy", "selective-generation"]
