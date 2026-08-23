@@ -5,6 +5,7 @@ fn thresholds() -> GatingThresholds {
         answer_alpha: -0.5,
         abstain_beta: -1.2,
         min_tokens: 1, // these tests exercise threshold logic, not the warmup floor
+        degenerate_guard: true,
     }
 }
 

@@ -1,12 +1,22 @@
 use bytes::Bytes;
 use futures_util::{stream, StreamExt};
 use rag_gate::{ConfidenceEvaluator, GatingThresholds, InterceptedStream, Protocol};
+use std::sync::{Mutex, OnceLock};
+
+/// The Prometheus counters are process-global, so tests that assert on them
+/// must not run concurrently with each other.
+static METRIC_LOCK: OnceLock<Mutex<()>> = OnceLock::new();
+
+fn metric_lock() -> std::sync::MutexGuard<'static, ()> {
+    METRIC_LOCK.get_or_init(|| Mutex::new(())).lock().unwrap_or_else(|p| p.into_inner())
+}
 
 fn thresholds() -> GatingThresholds {
     GatingThresholds {
         answer_alpha: -0.5,
         abstain_beta: -1.2,
         min_tokens: 1, // disable warmup floor so cut-behavior tests fire immediately
+        degenerate_guard: true,
     }
 }
 
@@ -42,6 +52,34 @@ async fn run_ndjson(chunks: Vec<Bytes>) -> Vec<Bytes> {
     let source = stream::iter(chunks.into_iter().map(Ok::<_, axum::Error>));
     let evaluator = ConfidenceEvaluator::new(thresholds());
     let intercepted = InterceptedStream::new_with_protocol(source, evaluator, 4, Protocol::Ndjson);
+    intercepted
+        .map(|r| r.expect("stream item should not error"))
+        .collect()
+        .await
+}
+
+/// One Gemini native `streamGenerateContent?alt=sse` SSE frame. With
+/// logprobs enabled (Vertex AI today), the chosen token's log probability is
+/// at `candidates[0].logprobsResult.chosenCandidates[].logProbability`.
+fn gemini_chunk(logprob: Option<f64>) -> Bytes {
+    let lp = match logprob {
+        Some(v) => format!(
+            r#","logprobsResult":{{"chosenCandidates":[{{"token":"a","logProbability":{}}}]}}"#,
+            v
+        ),
+        None => String::new(),
+    };
+    let json = format!(
+        r#"{{"candidates":[{{"content":{{"parts":[{{"text":"a"}}]}}{}}}]}}"#,
+        lp
+    );
+    Bytes::from(format!("data: {}\n\n", json))
+}
+
+async fn run_gemini(chunks: Vec<Bytes>) -> Vec<Bytes> {
+    let source = stream::iter(chunks.into_iter().map(Ok::<_, axum::Error>));
+    let evaluator = ConfidenceEvaluator::new(thresholds());
+    let intercepted = InterceptedStream::new_with_protocol(source, evaluator, 4, Protocol::Gemini);
     intercepted
         .map(|r| r.expect("stream item should not error"))
         .collect()
@@ -171,4 +209,149 @@ async fn stream_ending_without_trailing_blank_line_flushes_leftover() {
     assert_eq!(output.len(), 1);
     let text = String::from_utf8_lossy(&output[0]);
     assert!(text.contains("\"logprob\":-0.1"));
+}
+
+#[tokio::test]
+async fn degenerate_greedy_stream_disables_gating_and_counts_metric() {
+    // Every logprob ≈ 0 is the temperature-0/greedy-decoding artifact. The
+    // gate must (a) notice it, (b) count it in raggate_degenerate_signal_total,
+    // and (c) pass the whole stream through — a dead signal passing every
+    // frame as ANSWER must at least be visible, never silent.
+    use rag_gate::metrics::DEGENERATE_SIGNAL_TOTAL;
+
+    let _guard = metric_lock();
+    let before = DEGENERATE_SIGNAL_TOTAL.get();
+    let chunks: Vec<Bytes> = (0..30).map(|_| sse_chunk(-0.0001)).collect();
+    let output = run(chunks).await;
+
+    assert_eq!(DEGENERATE_SIGNAL_TOTAL.get(), before + 1.0);
+    assert_eq!(output.len(), 30); // no cut, no injected decision frame
+    for frame in &output {
+        let text = String::from_utf8_lossy(frame);
+        assert!(!text.contains("rag_gate_decision"));
+    }
+}
+
+#[tokio::test]
+async fn gemini_frames_without_logprobs_pass_through_ungated() {
+    // AI Studio reality (probed 2026-08-22): no model emits logprobs, so the
+    // frames carry no logprobsResult and the gate must no-op, forwarding
+    // every frame verbatim — same stance as the Ollama transport.
+    let chunks: Vec<Bytes> = (0..5).map(|_| gemini_chunk(None)).collect();
+    let expected = chunks.len();
+    let output = run_gemini(chunks).await;
+    assert_eq!(output.len(), expected);
+    for frame in &output {
+        let text = String::from_utf8_lossy(frame);
+        assert!(!text.contains("rag_gate_decision"));
+    }
+}
+
+#[tokio::test]
+async fn gemini_low_confidence_stream_cuts_and_emits_decision_frame() {
+    // Vertex AI reality: logprobs ARE emitted. Low-confidence frames must cut
+    // the stream and inject the decision frame, exactly like OpenAI SSE.
+    let chunks = vec![
+        gemini_chunk(Some(-2.0)),
+        gemini_chunk(Some(-2.5)),
+        gemini_chunk(Some(-3.0)),
+    ];
+    let output = run_gemini(chunks).await;
+    assert!(!output.is_empty());
+    let last = String::from_utf8_lossy(output.last().unwrap());
+    assert!(last.contains("ABSTAIN") || last.contains("ESCALATE"));
+    assert!(last.starts_with("data: ")); // SSE-wrapped, like the protocol's framing
+}
+
+#[tokio::test]
+async fn gemini_degenerate_stream_disables_gating_and_counts_metric() {
+    // The temp-0 guard is provider-agnostic: near-zero Gemini logProbability
+    // values must trip the same degenerate detection as OpenAI frames.
+    use rag_gate::metrics::DEGENERATE_SIGNAL_TOTAL;
+
+    let _guard = metric_lock();
+    let before = DEGENERATE_SIGNAL_TOTAL.get();
+    let chunks: Vec<Bytes> = (0..30).map(|_| gemini_chunk(Some(-0.0001))).collect();
+    let output = run_gemini(chunks).await;
+
+    assert_eq!(DEGENERATE_SIGNAL_TOTAL.get(), before + 1.0);
+    assert_eq!(output.len(), 30);
+    for frame in &output {
+        let text = String::from_utf8_lossy(frame);
+        assert!(!text.contains("rag_gate_decision"));
+    }
+}
+
+/// A frame that carries real content but no logprobs field at all — the
+/// silently-unsupported-upstream shape (verified live 2026-08-23 against
+/// xAI's grok-4.20+ line: `logprobs: true` requested, response has no
+/// `logprobs` key whatsoever), distinct from the degenerate near-zero case.
+fn sse_chunk_no_logprobs() -> Bytes {
+    Bytes::from(r#"data: {"choices":[{"delta":{"content":"hi"}}]}"#.to_string() + "\n\n")
+}
+
+#[tokio::test]
+async fn stream_with_zero_logprobs_despite_request_warns_and_counts_metric() {
+    use rag_gate::metrics::NO_LOGPROB_SIGNAL_TOTAL;
+
+    let _guard = metric_lock();
+    let before = NO_LOGPROB_SIGNAL_TOTAL.get();
+
+    let source = stream::iter(
+        (0..5)
+            .map(|_| sse_chunk_no_logprobs())
+            .collect::<Vec<_>>()
+            .into_iter()
+            .map(Ok::<_, axum::Error>),
+    );
+    let evaluator = ConfidenceEvaluator::new(thresholds());
+    let intercepted = InterceptedStream::new_with_protocol_and_request(
+        source,
+        evaluator,
+        4,
+        Protocol::Sse,
+        true, // logprobs_requested
+    );
+    let output: Vec<Bytes> = intercepted
+        .map(|r| r.expect("stream item should not error"))
+        .collect()
+        .await;
+
+    assert_eq!(NO_LOGPROB_SIGNAL_TOTAL.get(), before + 1.0);
+    // Every frame still passes through — the guard only warns/counts, it
+    // does not cut the stream (there's no confidence signal to act on).
+    assert_eq!(output.len(), 5);
+}
+
+#[tokio::test]
+async fn stream_with_zero_logprobs_when_not_requested_does_not_warn() {
+    use rag_gate::metrics::NO_LOGPROB_SIGNAL_TOTAL;
+
+    let _guard = metric_lock();
+    let before = NO_LOGPROB_SIGNAL_TOTAL.get();
+
+    let source = stream::iter(
+        (0..5)
+            .map(|_| sse_chunk_no_logprobs())
+            .collect::<Vec<_>>()
+            .into_iter()
+            .map(Ok::<_, axum::Error>),
+    );
+    let evaluator = ConfidenceEvaluator::new(thresholds());
+    let intercepted = InterceptedStream::new_with_protocol_and_request(
+        source,
+        evaluator,
+        4,
+        Protocol::Sse,
+        false, // logprobs_requested — e.g. inject_logprobs = false
+    );
+    let output: Vec<Bytes> = intercepted
+        .map(|r| r.expect("stream item should not error"))
+        .collect()
+        .await;
+
+    // Not requesting logprobs and not receiving them is expected, not a
+    // silent failure — the metric must not fire.
+    assert_eq!(NO_LOGPROB_SIGNAL_TOTAL.get(), before);
+    assert_eq!(output.len(), 5);
 }
