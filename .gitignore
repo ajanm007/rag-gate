@@ -1,4 +1,5 @@
 /target
+**/target
 .env
 **/.env
 rag-gate-prd.md

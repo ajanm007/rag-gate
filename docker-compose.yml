@@ -1,0 +1,21 @@
+services:
+  mock-upstream:
+    build: ./examples/mock-upstream
+    ports:
+      - "8090:8080"
+
+  rag-gate:
+    build: .
+    depends_on:
+      - mock-upstream
+    environment:
+      RAGGATE_UPSTREAM_URL: http://mock-upstream:8080
+      RAGGATE_LISTEN_ADDR: 0.0.0.0:8080
+    ports:
+      - "8080:8080"
+
+# Zero-key demo:
+#   docker compose up
+#   curl -N -X POST localhost:8080/v1/chat/completions \
+#     -H 'content-type: application/json' -H 'x-mock-profile: low' -d '{}'
+# -> the stream is cut and ends with a rag_gate_decision frame.
