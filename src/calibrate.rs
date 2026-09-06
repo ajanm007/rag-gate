@@ -1,6 +1,11 @@
 use axum::Json;
 use serde::{Deserialize, Serialize};
 
+use crate::eval::{
+    ScoredSample, abstain_rate_at_beta, compute_aurc, escalation_rate_between,
+    select_optimal_alpha, select_optimal_beta, sort_by_confidence,
+};
+
 #[derive(Debug, Deserialize)]
 pub struct CalibrationSample {
     pub question: Option<String>,
@@ -24,43 +29,6 @@ pub struct CalibrationResponse {
     pub escalation_rate: f64,
 }
 
-/// A sample's mean logprob confidence paired with correctness.
-struct ScoredSample {
-    confidence: f64,
-    correct: bool,
-}
-
-/// Risk at a given coverage: sort samples by confidence descending, keep the
-/// top `coverage` fraction ("answered"), and measure the error rate among those.
-fn risk_at_coverage(samples: &[ScoredSample], coverage: f64) -> f64 {
-    let n = samples.len();
-    if n == 0 {
-        return 0.0;
-    }
-    let kept = ((coverage * n as f64).round() as usize).max(1).min(n);
-    let errors = samples[..kept].iter().filter(|s| !s.correct).count();
-    errors as f64 / kept as f64
-}
-
-/// Computes the area under the risk-coverage curve via trapezoidal integration,
-/// sweeping coverage from 0 to 1, matching the RAG-Gate paper's AURC metric.
-fn compute_aurc(samples: &[ScoredSample], steps: usize) -> f64 {
-    if samples.is_empty() {
-        return 0.0;
-    }
-    let mut area = 0.0;
-    let mut prev_coverage = 0.0;
-    let mut prev_risk = risk_at_coverage(samples, 1.0 / samples.len() as f64);
-    for i in 1..=steps {
-        let coverage = i as f64 / steps as f64;
-        let risk = risk_at_coverage(samples, coverage);
-        area += (risk + prev_risk) / 2.0 * (coverage - prev_coverage);
-        prev_coverage = coverage;
-        prev_risk = risk;
-    }
-    area
-}
-
 pub async fn calibrate_handler(
     Json(payload): Json<CalibrationRequest>,
 ) -> Json<CalibrationResponse> {
@@ -82,53 +50,16 @@ pub async fn calibrate_handler(
         .collect();
 
     // Sort descending by confidence: highest-confidence samples are "answered" first.
-    scored.sort_by(|a, b| b.confidence.partial_cmp(&a.confidence).unwrap_or(std::cmp::Ordering::Equal));
+    sort_by_confidence(&mut scored);
 
     let n = scored.len();
     let aurc_at_target_coverage = compute_aurc(&scored, 100.max(n));
 
-    // optimal_alpha: the confidence threshold that answers exactly `target_coverage`
-    // of samples (highest-confidence fraction).
-    let optimal_alpha = if n > 0 {
-        let kept = ((payload.target_coverage * n as f64).round() as usize).max(1).min(n);
-        scored[kept - 1].confidence
-    } else {
-        -0.5
-    };
+    let optimal_alpha = select_optimal_alpha(&scored, payload.target_coverage);
+    let optimal_beta = select_optimal_beta(&scored, payload.target_coverage, optimal_alpha);
 
-    // optimal_beta: sweep downward from alpha and pick the confidence level below
-    // which risk exceeds 2x the risk at target coverage — everything below that is
-    // abstained rather than escalated. Falls back to a fixed offset with too few samples.
-    let risk_at_target = risk_at_coverage(&scored, payload.target_coverage);
-    let optimal_beta = if n >= 5 {
-        (0..n)
-            .rev()
-            .map(|idx| {
-                let coverage = (idx + 1) as f64 / n as f64;
-                (idx, risk_at_coverage(&scored, coverage))
-            })
-            .find(|&(_, risk)| risk <= risk_at_target * 2.0)
-            .map(|(idx, _)| scored[idx].confidence)
-            .unwrap_or(optimal_alpha - 0.7)
-    } else {
-        optimal_alpha - 0.7
-    };
-
-    let abstain_rate = if n > 0 {
-        scored.iter().filter(|s| s.confidence < optimal_beta).count() as f64 / n as f64
-    } else {
-        0.0
-    };
-
-    let escalation_rate = if n > 0 {
-        scored
-            .iter()
-            .filter(|s| s.confidence >= optimal_beta && s.confidence < optimal_alpha)
-            .count() as f64
-            / n as f64
-    } else {
-        0.0
-    };
+    let abstain_rate = abstain_rate_at_beta(&scored, optimal_beta);
+    let escalation_rate = escalation_rate_between(&scored, optimal_alpha, optimal_beta);
 
     Json(CalibrationResponse {
         optimal_alpha,

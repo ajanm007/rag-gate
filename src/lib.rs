@@ -4,6 +4,7 @@ pub mod interceptor;
 pub mod proxy;
 pub mod metrics;
 pub mod calibrate;
+pub mod eval;
 
 pub use config::{GatingThresholds, ProxyConfig};
 pub use evaluator::{ConfidenceEvaluator, Decision};
