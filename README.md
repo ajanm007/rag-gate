@@ -1,16 +1,32 @@
 # rag-gate
 
-A fast, asynchronous **inference-time** (while the model is actively generating tokens) **confidence middleware** that intercepts OpenAI-compatible LLM API streams, evaluates token-level logprob confidence in real time, and gates generation output into one of three decisions: **ANSWER**, **ABSTAIN**, or **ESCALATE**.
+Cuts a low-confidence LLM answer **before it reaches the client**, using the logprobs the model already computes during generation — no extra LLM call, no judge model, no retrieval-score threshold. Sub-ms added latency (p50 ~0.2–0.4ms), measured at 200 concurrent streams within ~5% of direct throughput.
 
-It uses a signal that's already computed for free during inference token logprobs as a real-time confidence gate, instead of a post-hoc LLM judge (expensive, slow) or a retrieval-score threshold (cheap, but empirically flat with model uncertainty).
+The signal works on short-answer QA: mean token logprob ranks correct vs. incorrect answers with **AUROC 0.73–0.85** (measured, n=100, two model families — see `benchmarks/signal_decision.md`). It's not calibrated probability — a logprob is the model's conditional likelihood for one token, not P(answer is correct) — which is exactly why the threshold has to be calibrated on labeled data (`/v1/rag-gate/calibrate` below) rather than trusted as-is. It's also temperature-dependent (see Known limitations) — calibrate at the temperature you serve at. **The signal strength above does not generalize to every answer shape** — it's weaker on long reasoning traces and not yet confirmed at all on open-ended prose answers (see Known limitations).
 
 It is not a model, and not a RAG framework. It's a wire-level proxy with one job: decide if the model is confident enough to trust.
+
+## Try it in 30 seconds (no API key)
+
+```bash
+docker compose up
+curl -N -X POST localhost:8080/v1/chat/completions \
+  -H 'content-type: application/json' -H 'x-mock-profile: low' -d '{}'
+```
+
+The stream is cut mid-generation and ends with a decision frame:
+
+```json
+{"rag_gate_decision": "ABSTAIN", "confidence_score": -2.75, "tokens_evaluated": 4, "threshold_used": -1.2}
+```
+
+(`x-mock-profile: high` instead runs the mock at high confidence and gets a normal full ANSWER passthrough — same command, no key, no network dependency.)
 
 ## Status
 
 Pre-1.0, but functionally verified. The core proxy, confidence evaluator, calibration endpoint, and stream chunk reassembly (see Known limitations) are implemented and tested including live end-to-end verification against a mock upstream and real OpenAI-compatible endpoints (historically xAI's Grok API; currently live-verified end-to-end — gating included — against `openai/gpt-4o-mini` via OpenRouter, with a decision frame firing on real logprobs). An Ollama `/api/chat` transport (NDJSON) is implemented and tested end-to-end against a mock Ollama upstream — but see Known limitations for why confidence gating is inert against Ollama today. Published on crates.io as `rag-gate`. Three upstream transports: OpenAI-compatible SSE, Ollama NDJSON, and Gemini native SSE (gating expected live on Vertex AI per Google's docs — synthetic-tested, live verification pending; forward-compatible on AI Studio).
 
-## Quick start
+## Quick start against a real upstream
 
 Install the binary from crates.io:
 
@@ -150,6 +166,36 @@ curl -X POST http://127.0.0.1:8080/v1/rag-gate/calibrate \
 
 See `test_calibrate.py` for a runnable example.
 
+### Offline evaluation: `rag-gate evaluate`
+
+The same threshold-search and risk-coverage math backing `/calibrate` is also available as a CLI report against a saved dataset — useful for scoring an eval run (like the ones in `benchmarks/`) without standing up the proxy:
+
+```bash
+rag-gate evaluate --dataset benchmarks/gsm8k_pilot_results_n100.json --target-coverage 0.8
+```
+
+```text
+rag-gate evaluate: benchmarks/gsm8k_pilot_results_n100.json
+target coverage: 0.80
++--------------------+----------+
+| n                  |      100 |
+| n_correct          |       93 |
+| accuracy           |   0.9300 |
+| optimal_alpha      |  -0.1794 |
+| optimal_beta       |  -0.3123 |
+| coverage           |   0.8000 |
+| risk               |   0.0375 |
+| aurc               |   0.0246 |
+| false_accept_rate  |   0.0375 |
+| false_abstain_rate |   0.0000 |
+| abstain_rate       |   0.0000 |
+| escalation_rate    |   0.2000 |
++--------------------+----------+
+answered 80/100  abstained 0/100  escalated 20/100
+```
+
+Add `--json` for machine-readable output instead of the table. The dataset file must be either `{"results": [...]}` or a bare `[...]` array of records, each with at least `confidence` (f64) and `correct` (bool) — every other field (question text, gold answers, raw logprobs, model metadata) is read and ignored. `rag-gate` with no subcommand (or `rag-gate serve`) still starts the proxy as before; `evaluate` never binds a port.
+
 ## Performance
 
 Measured added latency (rag-gate vs. calling the upstream directly), release build, local loopback against a 20-token streamed response, 200 requests:
@@ -202,6 +248,7 @@ Throughput stays within ~5% of a direct connection at 200 concurrent streams, wi
 - **Gemini's native API is supported as a third transport** (`streamGenerateContent?alt=sse`, both AI Studio `/v1beta/models/...` and Vertex `/v1beta1/projects/.../publishers/google/models/...` path shapes — the client's path, query, and auth headers are forwarded as-is, so use `x-goog-api-key` for AI Studio or OAuth `Authorization: Bearer` for Vertex). Gating status is asymmetric: every AI Studio model rejects logprobs with "Logprobs is not enabled" — verified live 2026-08-22 against all 50 models (see `benchmarks/gemini_logprob_probe.py`), so against AI Studio the proxy passes through ungated and auto-activates if Google flips the server-side flag. Vertex AI documents logprobs support (`generationConfig.responseLogprobs`), so the gate is *expected* to be live there — the gating logic is covered by synthetic-frame tests, but the Vertex path has not been live-verified through rag-gate yet (no OAuth-credentialed upstream on hand). Non-streaming `generateContent` is rejected (501) — rag-gate gates streams only.
 - Not every "OpenAI-compatible" API accepts the auto-injected `logprobs: true` field — Google's Gemini OpenAI-*compat* layer rejects it with a 400. Set `inject_logprobs = false` (or `RAGGATE_INJECT_LOGPROBS=false`) for those upstreams; gating then only fires if the client itself requests logprobs. (The native Gemini route above injects `generationConfig.responseLogprobs` instead — for AI Studio, where no model accepts it today, the same flag disables that injection.)
 - **Confidence is temperature-dependent.** Mean token logprob rises toward 0 as sampling temperature drops (at temperature 0 the model always picks the argmax token, whose logprob is near 0). So a pipeline running the upstream at very low temperature will see near-perfect confidence on nearly everything and the gate will rarely fire — calibrate your thresholds at the temperature you actually serve at, and re-calibrate if you change it. (This also means "just retry at a lower temperature" is not a reliable recovery strategy — it inflates the confidence score without necessarily improving the answer; see `benchmarks/`.) The proxy detects the fully-degenerate case: if the running mean is still ≈ 0 after 16 tokens, it logs a warning, increments `raggate_degenerate_signal_total`, and stops gating that stream rather than silently passing everything as ANSWER. Disable with `RAGGATE_DEGENERATE_GUARD=false`. A systematic measurement of how much signal survives at intermediate temperatures is pre-registered in `benchmarks/signal_decision.md` (see `temperature_sweep_eval.py`).
+- **All benchmark evidence above (AUROC 0.73–0.85) was measured on short-answer extractive QA (HotpotQA — answers averaging ~3 tokens); it does not generalize to every answer shape.** A same-day pilot (n=100, `openai/gpt-4o-mini` via OpenRouter, temp 0.7) tested two other answer shapes: **GSM8K math word problems** (long multi-step reasoning traces, mean 303 tokens, but an exact-match-scorable final number) held up at **AUROC 0.762 [0.564, 0.932]** — weaker than the short-answer baseline but a real, statistically distinguishable signal. **MS MARCO long-form prose answers** (paragraph-length, scored by keyword recall against gold since there's no exact match for free text) came back at **AUROC 0.541 [0.421, 0.657]** — indistinguishable from chance. So it isn't generation *length* alone that degrades the signal (GSM8K is long and still works); something about open-ended prose answers specifically weakens or erases it, and this pilot can't yet tell whether that's a real domain effect or an artifact of keyword-recall's noisier correctness labels versus GSM8K/HotpotQA's exact match. One data point each, one provider, one temperature — **do not deploy rag-gate against long-form/summarization-style generation and expect the 0.85 AUROC number; recalibrate and re-measure on your own answer shape first.** Raw results: `benchmarks/gsm8k_pilot_results_n100.json`, `benchmarks/longform_pilot_results_n100.json`.
 - Escalation routing (automatic retry/reroute to a fallback model on ESCALATE) is not yet implemented — the client currently has to handle that itself, and the evidence so far does not justify building it. Two recovery strategies were evaluated (see `benchmarks/`): a `lower_temperature` retry, which is *mechanistically* disqualified because low temperature inflates the confidence metric without necessarily improving the answer; and **rerouting to a stronger model** (`grok-3-mini`→`grok-4.5`, 45-question low-confidence band), which moved band accuracy 35.6%→42.2% but with **6 fixes against 3 regressions — net +3, McNemar p = 0.51, not significant**. Rerouting is not a free win (it also breaks answers), so neither strategy is currently shipped.
 - The stream chunk parser reassembles both SSE events (`\n\n`) and NDJSON lines (`\n`) split across TCP/HTTP chunk boundaries rather than assuming one poll equals one complete frame; covered by dedicated tests, but real-world traffic patterns are inherently broader than any test suite.
 - Added-latency overhead and concurrent-stream throughput have been benchmarked (see Performance) on a single machine; sustained multi-node or WAN deployments have not.
