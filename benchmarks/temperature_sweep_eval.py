@@ -119,7 +119,7 @@ def ask(key, question, temperature, api_url, model, reasoning_effort=None):
 
     answer_text = "".join(answer_parts).strip()
     mean_logprob = sum(logprobs) / len(logprobs) if logprobs else float("-inf")
-    return answer_text, mean_logprob, len(logprobs)
+    return answer_text, mean_logprob, len(logprobs), logprobs
 
 
 def ask_with_retry(key, question, temperature, api_url, model, reasoning_effort=None, tries=3):
@@ -239,7 +239,7 @@ def run_live(args, key):
         for i, q in enumerate(questions):
             start = time.time()
             try:
-                answer, conf, n_tok = ask_with_retry(
+                answer, conf, n_tok, logprobs = ask_with_retry(
                     key, q["question"], temp, args.api_base, args.model, args.reasoning_effort
                 )
             except Exception as e:
@@ -257,6 +257,7 @@ def run_live(args, key):
                     "confidence": conf,
                     "n_tokens": n_tok,
                     "correct": correct,
+                    "logprobs": logprobs,
                 }
             )
             print(
@@ -283,6 +284,11 @@ def run_dry(args):
             conf = base + rng.uniform(-spread, spread) + (0.05 if correct else -0.05)
             conf = min(conf, -0.0002) if temp == 0.0 else conf
             answer = q["answer"] if correct else "wrong"
+            n_tok = 30
+            # Fabricate a per-token trajectory that averages to conf, so dry-run
+            # output has the same shape as live output (logprobs field included).
+            fake_logprobs = [round(conf + rng.uniform(-abs(conf) - 0.01, abs(conf) + 0.01), 4)
+                              for _ in range(n_tok)]
             results.append(
                 {
                     "id": q["id"],
@@ -290,8 +296,9 @@ def run_dry(args):
                     "gold": q["answer"],
                     "model_answer": answer,
                     "confidence": round(conf, 4),
-                    "n_tokens": 30,
+                    "n_tokens": n_tok,
                     "correct": correct,
+                    "logprobs": fake_logprobs,
                 }
             )
         all_results[str(temp)] = results
