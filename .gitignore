@@ -6,6 +6,10 @@ rag-gate-prd.md
 SESSION_LOG.md
 HANDOFF_EVAL_HARNESS_BRIEF.md
 HANDOFF_EVAL_HARNESS_NOTE.md
+HANDOFF_LIVE_EVAL_BRIEF.md
+HANDOFF_LIVE_EVAL_NOTE.md
+PLAN_LIVE_EVAL.md
+_gpt_harness_prompt.md
 __pycache__/
 benchmarks/hotpotqa_bigN_sample.json
 .freebuff/
