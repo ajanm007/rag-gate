@@ -196,6 +196,23 @@ answered 80/100  abstained 0/100  escalated 20/100
 
 Add `--json` for machine-readable output instead of the table. The dataset file must be either `{"results": [...]}` or a bare `[...]` array of records, each with at least `confidence` (f64) and `correct` (bool) — every other field (question text, gold answers, raw logprobs, model metadata) is read and ignored. `rag-gate` with no subcommand (or `rag-gate serve`) still starts the proxy as before; `evaluate` never binds a port.
 
+### Validate the signal on your own data: `benchmarks/live_eval.py`
+
+`rag-gate evaluate` only scores a dataset that's already been run — it can't tell you whether the confidence signal holds for *your* model and *your* questions. `live_eval.py` closes that loop: it takes a plain `{question, gold_answer}` dataset, actually calls a real OpenAI-compatible upstream for each question (streaming, with logprobs), scores the answer, and hands the result straight to `rag-gate evaluate` for the report — so you get the same table above, but for your own workload instead of `benchmarks/`'s.
+
+```bash
+python benchmarks/live_eval.py \
+  --dataset questions.json \
+  --upstream https://openrouter.ai/api \
+  --model openai/gpt-4o-mini \
+  --output results.json \
+  --rag-gate-bin target/release/rag-gate
+```
+
+`questions.json` is a bare array: `[{"question": "...", "gold_answer": "..."}, ...]`. The API key is read from `--api-key`, or the env var named by `--key-env` (default `OPEN_ROUTER_KEY`), or `src/.env` as a fallback — same convention as the `benchmarks/*.py` scripts.
+
+**Correctness is exact match only** (trim + lowercase, nothing fuzzier) — deliberately, so the verdict is never arguable. That means it will call a genuinely correct answer wrong if it doesn't match the gold string exactly (e.g. a model answering `"Eight."` against a gold value of `"8"`) — the per-question line printed to stderr always shows the model's raw answer next to the verdict, so a false negative like that is visible immediately rather than hidden inside an aggregate number. This script never re-implements any of `rag-gate evaluate`'s scoring math itself; it only produces `{confidence, correct}` records and calls the real binary as a subprocess for the report, so the two can't silently disagree.
+
 ## Performance
 
 Measured added latency (rag-gate vs. calling the upstream directly), release build, local loopback against a 20-token streamed response, 200 requests:
