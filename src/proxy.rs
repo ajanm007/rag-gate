@@ -6,7 +6,7 @@ use axum::{
     Router,
 };
 use bytes::Bytes;
-use reqwest::{Client, Method, header};
+use reqwest::{Client, Method, Url, header};
 use tracing::error;
 use futures_util::StreamExt;
 
@@ -152,10 +152,38 @@ async fn proxy_stream(
     protocol: Protocol,
 ) -> Response {
     let request_start = Instant::now();
-    let upstream_url = match query.as_deref() {
-        Some(q) if !q.is_empty() => format!("{}{}?{}", state.config.upstream_url, path, q),
-        _ => format!("{}{}", state.config.upstream_url, path),
+    let base_url = match Url::parse(&state.config.upstream_url) {
+        Ok(u) => u,
+        Err(_) => {
+            return (
+                axum::http::StatusCode::BAD_GATEWAY,
+                "invalid upstream_url configuration",
+            )
+                .into_response();
+        }
     };
+
+    let mut upstream_url = base_url.clone();
+    let mut normalized = base_url.path().trim_end_matches('/').to_string();
+    normalized.push('/');
+    normalized.push_str(path.trim_start_matches('/'));
+    upstream_url.set_path(&normalized);
+
+    match query.as_deref() {
+        Some(q) if !q.is_empty() => upstream_url.set_query(Some(q)),
+        _ => upstream_url.set_query(None),
+    }
+
+    if upstream_url.scheme() != base_url.scheme()
+        || upstream_url.host_str() != base_url.host_str()
+        || upstream_url.port_or_known_default() != base_url.port_or_known_default()
+    {
+        return (
+            axum::http::StatusCode::BAD_GATEWAY,
+            "upstream URL validation failed",
+        )
+            .into_response();
+    }
 
     let headers = forward_headers(req.headers());
 
@@ -232,7 +260,7 @@ async fn proxy_stream(
 
     let res = match state
         .http_client
-        .request(Method::POST, &upstream_url)
+        .request(Method::POST, upstream_url)
         .headers(headers)
         .body(body_bytes)
         .send()
