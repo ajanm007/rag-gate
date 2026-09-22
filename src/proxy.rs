@@ -6,7 +6,7 @@ use axum::{
     Router,
 };
 use bytes::Bytes;
-use reqwest::{Client, Method, header};
+use reqwest::{Client, Method, Url, header};
 use tracing::error;
 use futures_util::StreamExt;
 
@@ -14,6 +14,7 @@ use crate::config::ProxyConfig;
 use crate::evaluator::ConfidenceEvaluator;
 use crate::interceptor::{InterceptedStream, Protocol};
 use crate::metrics::{PROXY_LATENCY_MS, REQUESTS_TOTAL};
+use std::net::IpAddr;
 use std::time::{Duration, Instant};
 
 #[derive(Clone)]
@@ -140,6 +141,62 @@ fn gemini_error(status: axum::http::StatusCode, msg: &str) -> Response {
     (status, msg.to_string()).into_response()
 }
 
+fn is_private_ip(ip: IpAddr) -> bool {
+    match ip {
+        IpAddr::V4(v4) => {
+            v4.is_private()
+                || v4.is_loopback()
+                || v4.is_link_local()
+                || v4.is_multicast()
+                || v4.is_broadcast()
+                || v4.is_documentation()
+                || v4.is_unspecified()
+        }
+        IpAddr::V6(v6) => {
+            v6.is_loopback()
+                || v6.is_unspecified()
+                || v6.is_unique_local()
+                || v6.is_multicast()
+                || v6.is_unicast_link_local()
+        }
+    }
+}
+
+fn is_disallowed_host(host: &str) -> bool {
+    if host.eq_ignore_ascii_case("localhost") {
+        return true;
+    }
+
+    if let Ok(ip) = host.parse::<IpAddr>() {
+        return is_private_ip(ip);
+    }
+
+    false
+}
+
+fn is_safe_upstream_base_url(url: &Url) -> bool {
+    match url.scheme() {
+        "http" | "https" => {}
+        _ => return false,
+    }
+
+    if url.host_str().is_none() {
+        return false;
+    }
+
+    if !url.username().is_empty() || url.password().is_some() {
+        return false;
+    }
+
+    if let Some(host) = url.host_str() {
+        if is_disallowed_host(host) {
+            return false;
+        }
+    }
+
+    true
+}
+
 /// Shared proxy path for all upstream flavors. `path` (plus optional `query`)
 /// is appended to the configured `upstream_url`; `protocol` selects the
 /// interceptor's framing/extraction and which streaming/logprobs fields get
@@ -152,10 +209,46 @@ async fn proxy_stream(
     protocol: Protocol,
 ) -> Response {
     let request_start = Instant::now();
-    let upstream_url = match query.as_deref() {
-        Some(q) if !q.is_empty() => format!("{}{}?{}", state.config.upstream_url, path, q),
-        _ => format!("{}{}", state.config.upstream_url, path),
+    let base_url = match Url::parse(&state.config.upstream_url) {
+        Ok(u) => u,
+        Err(_) => {
+            return (
+                axum::http::StatusCode::BAD_GATEWAY,
+                "invalid upstream_url configuration",
+            )
+                .into_response();
+        }
     };
+
+    if !is_safe_upstream_base_url(&base_url) {
+        return (
+            axum::http::StatusCode::BAD_GATEWAY,
+            "unsafe upstream_url configuration",
+        )
+            .into_response();
+    }
+
+    let mut upstream_url = base_url.clone();
+    let mut normalized = base_url.path().trim_end_matches('/').to_string();
+    normalized.push('/');
+    normalized.push_str(path.trim_start_matches('/'));
+    upstream_url.set_path(&normalized);
+
+    match query.as_deref() {
+        Some(q) if !q.is_empty() => upstream_url.set_query(Some(q)),
+        _ => upstream_url.set_query(None),
+    }
+
+    if upstream_url.scheme() != base_url.scheme()
+        || upstream_url.host_str() != base_url.host_str()
+        || upstream_url.port_or_known_default() != base_url.port_or_known_default()
+    {
+        return (
+            axum::http::StatusCode::BAD_GATEWAY,
+            "upstream URL validation failed",
+        )
+            .into_response();
+    }
 
     let headers = forward_headers(req.headers());
 
@@ -232,7 +325,7 @@ async fn proxy_stream(
 
     let res = match state
         .http_client
-        .request(Method::POST, &upstream_url)
+        .request(Method::POST, upstream_url)
         .headers(headers)
         .body(body_bytes)
         .send()
