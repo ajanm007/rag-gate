@@ -14,6 +14,7 @@ use crate::config::ProxyConfig;
 use crate::evaluator::ConfidenceEvaluator;
 use crate::interceptor::{InterceptedStream, Protocol};
 use crate::metrics::{PROXY_LATENCY_MS, REQUESTS_TOTAL};
+use std::net::IpAddr;
 use std::time::{Duration, Instant};
 
 #[derive(Clone)]
@@ -140,6 +141,62 @@ fn gemini_error(status: axum::http::StatusCode, msg: &str) -> Response {
     (status, msg.to_string()).into_response()
 }
 
+fn is_private_ip(ip: IpAddr) -> bool {
+    match ip {
+        IpAddr::V4(v4) => {
+            v4.is_private()
+                || v4.is_loopback()
+                || v4.is_link_local()
+                || v4.is_multicast()
+                || v4.is_broadcast()
+                || v4.is_documentation()
+                || v4.is_unspecified()
+        }
+        IpAddr::V6(v6) => {
+            v6.is_loopback()
+                || v6.is_unspecified()
+                || v6.is_unique_local()
+                || v6.is_multicast()
+                || v6.is_unicast_link_local()
+        }
+    }
+}
+
+fn is_disallowed_host(host: &str) -> bool {
+    if host.eq_ignore_ascii_case("localhost") {
+        return true;
+    }
+
+    if let Ok(ip) = host.parse::<IpAddr>() {
+        return is_private_ip(ip);
+    }
+
+    false
+}
+
+fn is_safe_upstream_base_url(url: &Url) -> bool {
+    match url.scheme() {
+        "http" | "https" => {}
+        _ => return false,
+    }
+
+    if url.host_str().is_none() {
+        return false;
+    }
+
+    if !url.username().is_empty() || url.password().is_some() {
+        return false;
+    }
+
+    if let Some(host) = url.host_str() {
+        if is_disallowed_host(host) {
+            return false;
+        }
+    }
+
+    true
+}
+
 /// Shared proxy path for all upstream flavors. `path` (plus optional `query`)
 /// is appended to the configured `upstream_url`; `protocol` selects the
 /// interceptor's framing/extraction and which streaming/logprobs fields get
@@ -162,6 +219,14 @@ async fn proxy_stream(
                 .into_response();
         }
     };
+
+    if !is_safe_upstream_base_url(&base_url) {
+        return (
+            axum::http::StatusCode::BAD_GATEWAY,
+            "unsafe upstream_url configuration",
+        )
+            .into_response();
+    }
 
     let mut upstream_url = base_url.clone();
     let mut normalized = base_url.path().trim_end_matches('/').to_string();
